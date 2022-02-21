@@ -1,7 +1,8 @@
 package com.netcracker.domain;
 
-import com.netcracker.domain.enumeration.Gender;
+
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
@@ -23,5 +24,7 @@ public class Customer {
     String eMail;
 
     @Column(name = "password")
-    String password;
+    String passwordHash;
+
+
 }

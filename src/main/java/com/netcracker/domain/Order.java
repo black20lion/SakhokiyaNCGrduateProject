@@ -20,11 +20,12 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="order")
+@Table(name="order_entity")
 public class Order {
+
     @Id
     @Column(name = "id")
-    private Long Id;
+    private Long id;
 
     @Column(name = "customer_id")
     private Long customerId;
@@ -32,7 +33,7 @@ public class Order {
     @Column(name = "date_time")
     private Date dateTime;
 
-    @Column(name="comments")
+    @Column(name="commentary")
     private String comments;
 
     @Column(name = "delivery_address")
@@ -56,4 +57,10 @@ public class Order {
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "email")
+    private String email;
 }
