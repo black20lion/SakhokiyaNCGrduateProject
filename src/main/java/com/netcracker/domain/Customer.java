@@ -23,8 +23,10 @@ public class Customer {
     @Column(name = "email")
     String eMail;
 
-    @Column(name = "password")
+    @Column(name = "passwordHash")
     String passwordHash;
 
+    @Column
+    String salt;
 
 }

@@ -15,7 +15,7 @@ import java.sql.Date;
 public class CustomerInfo {
         @Id
         @Column(name = "customer_id")
-        private Long id;
+        private Long customerId;
 
         @Column(name = "first_name")
         private String firstName;
