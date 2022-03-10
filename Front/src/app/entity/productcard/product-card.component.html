@@ -1,0 +1,15 @@
+<span>
+  <picture>
+    <img src='{{productCard.imageUrl}}' alt='{{productCard.productName}}'>
+  </picture>
+  <p>
+    <a style="color: red; font-size: 1.5vw; font-weight: bold" *ngIf="productCard.priceOverride != undefined">
+      {{productCard.priceOverride}} руб.
+    </a>
+    <a id="price" [ngClass]="{
+basic: (productCard.priceOverride == undefined),
+crossedOut: (productCard.priceOverride != undefined)}">
+    {{productCard.price}} руб.
+  </a></p>
+  <p style="margin-top: 0">{{productCard.productName}}</p>
+</span>

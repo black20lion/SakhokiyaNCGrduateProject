@@ -1,0 +1,331 @@
+.container {
+  margin: 0 auto;
+}
+
+button {
+  background-color: #222222;
+  border: none;
+  color: white;
+  padding: 0.6vw 1.2vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.5vw;
+  font-weight: 10;
+  letter-spacing: 0.05vw;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-left: 0.1vw;
+  border-radius: 0.2vw;;
+  height: 2vw;
+}
+
+button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  background-color: black;
+}
+
+ul {
+  type: none;
+  text-align: left;
+}
+
+li {
+  list-style-type: none;
+}
+
+img#logo {
+  position: absolute;
+  top: 1vw;
+  left: 13.3vw;
+  vertical-align: middle;
+  width: 10vw;
+  height: 8.45vw;
+}
+
+span#forWomen {
+  font-size: 0.8vw;
+  padding-top: 0.6vw;
+  padding-bottom: 0.6vw;
+  padding-right: 5.4vw;
+  padding-left: 5.4vw;
+
+  border: 1px solid #ccc;
+  background-color: white;
+
+  position: absolute;
+  top: 10vw;
+  left: 14.37vw;
+  z-index: 1000;
+
+  &.selected {
+    background-color: whitesmoke;
+  }
+}
+
+span#forWomen:hover {
+  background-color: whitesmoke;
+}
+
+span#forMen {
+  font-size: 0.8vw;
+  padding-top: 0.6vw;
+  padding-bottom: 0.6vw;
+  padding-right: 5.41vw;
+  padding-left: 5.41vw;
+
+  border: 1px solid #ccc;
+  background-color: white;
+
+  position: absolute;
+  top: 10vw;
+  left: 29.43vw;
+  z-index: 1001;
+
+  &.selected {
+    background-color: whitesmoke;
+  }
+}
+
+span#forMen:hover {
+  background-color: whitesmoke;
+}
+
+span#sale {
+  font-size: 0.8vw;
+  padding-top: 0.6vw;
+  padding-bottom: 0.6vw;
+  padding-right: 5.4vw;
+  padding-left: 5.4vw;
+
+  border: 1px solid #ccc;
+  background-color: white;
+
+  position: absolute;
+  top: 10vw;
+  left: 44.39vw;
+  z-index: 1000;
+}
+
+span#sale:hover {
+  background-color: whitesmoke;
+}
+
+span#novelty {
+  font-size: 0.8vw;
+  padding-top: 0.6vw;
+  padding-bottom: 0.6vw;
+  padding-right: 5.4vw;
+  padding-left: 5.4vw;
+
+  border: 1px solid #ccc;
+  background-color: white;
+
+  position: absolute;
+  top: 10vw;
+  left: 59.90vw;
+  z-index: 1000;
+}
+
+span#novelty:hover {
+  background-color: whitesmoke;
+}
+
+span#aboutMenu {
+  font-size: 0.8vw;
+  padding-top: 0.6vw;
+  padding-bottom: 0.6vw;
+  padding-right: 5.4vw;
+  padding-left: 5.4vw;
+
+  border: 1px solid #ccc;
+  background-color: white;
+
+  position: absolute;
+  top: 10vw;
+  left: 74.06vw;
+  z-index: 1000;
+}
+
+span#aboutMenu:hover {
+  background-color: whitesmoke;
+}
+
+span#menuIcons {
+  position: absolute;
+  left: 76vw;
+  top: 6vw;
+}
+
+span#city {
+  position: absolute;
+  top: 6vw;
+  left: 25vw;
+  vertical-align: middle;
+  display: inline-block;
+  width: 10vw;
+  color: grey;
+  font-size: 0.8vw;
+}
+
+span#phone {
+  font-size: 1.5vw;
+  position: absolute;
+  top: 6vw;
+  left: 47vw;
+  vertical-align: middle;
+  display: inline-block;
+  color: black;
+  font-weight: 1000;
+}
+
+div#femaleCategories {
+  font-size: 0.7vw;
+  background-color: whitesmoke;
+  width: 15.01vw;
+  position: absolute;
+  top: 12.00vw;
+  left: 14.37vw;
+  border: lightgrey 1px solid;
+
+  ul {
+    padding-left: 0vw;
+    position: relative;
+    left: -1vw;
+    margin-bottom: -0.0vw;
+    top: -1.07vw;
+  }
+
+  li {
+    padding-left: 2.5vw;
+    white-space: nowrap;
+    margin-top: 2vw;
+  }
+
+  hr {
+    position: absolute;
+    left: 0.94vw;
+    margin-top: -1vw;
+    margin-bottom: 1vw;
+    color: grey;
+    width: 14.95vw;
+    height: 1px;
+    opacity: 0.3;
+  }
+}
+
+div#maleCategories {
+  font-size: 0.7vw;
+  background-color: whitesmoke;
+  width: 14.90vw;
+  position: absolute;
+  top: 12.00vw;
+  left: 29.43vw;
+  border: lightgrey 1px solid;
+  z-index: 1000;
+
+  ul {
+    padding-left: 0vw;
+    position: relative;
+    left: -1vw;
+    margin-bottom: -0.0vw;
+    top: -1.07vw;
+  }
+
+  li {
+    padding-left: 2.5vw;
+    white-space: nowrap;
+    margin-top: 2vw;
+  }
+
+  hr {
+    position: absolute;
+    left: 0.94vw;
+    margin-top: -1vw;
+    margin-bottom: 1vw;
+    color: grey;
+    width: 14.95vw;
+    height: 1px;
+    opacity: 0.3;
+  }
+}
+
+div#mainAbout {
+  font-size: 0.8vw;
+  position: absolute;
+  top: 42.0vw;
+  left: 14.4vw;
+  display: inline-block;
+  color: grey;
+  width: 72.8vw;
+
+  img#mainAboutPic {
+    float: right;
+    width: 43vw;
+    margin-left: 2vw;
+    margin-top: 1vw;
+  }
+
+  h1 {
+    position: relative;
+    top: 1vw;
+    font-size: 1.4vw;
+    color: black;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 2.5vw;
+  }
+
+  h4 {
+    position: relative;
+    top: 2.0vw;
+    font-size: 0.8vw;
+    font-weight: 300;
+  }
+
+  p {
+    line-height: 1.3vw;
+  }
+}
+
+div#bestOffers {
+  font-size: 0.8vw;
+  position: absolute;
+  top: 12.0vw;
+  left: 14.4vw;
+  display: inline-block;
+  color: grey;
+  width: 72.8vw;
+
+  h1 {
+    left: 0vw;
+    position: relative;
+    top: 1vw;
+    font-size: 1.4vw;
+    color: black;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 2.5vw;
+  }
+
+  div#boCards {
+    margin-left: 1.2vw;
+    display: grid;
+    grid-template-columns:  max-content max-content max-content max-content max-content;
+    align-items: center;
+    justify-content: space-around;
+
+    span {
+      display: grid;
+      justify-items: center;
+    }
+  }
+}
+
+footer {
+  position: relative;
+  top: 75vw;
+  height: 27vw;
+  margin-right: -0.8vw;
+  margin-left: -0.9vw;
+  background-color: #333333;
+}

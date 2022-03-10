@@ -1,0 +1,43 @@
+.icon {
+  vertical-align: middle;
+  display: inline-block;
+  position: absolute;
+
+  img {
+    width: 1.45vw;
+    height: 1.5vw;
+  }
+
+    &.first {
+      left: 0;
+      opacity: 0.5;
+    }
+
+    &.second {
+      left: 3.7vw;
+      opacity: 0.5;
+    }
+
+    &.third {
+      left: 7.4vw;
+      opacity: 0.5;
+    }
+
+    &.forth {
+      left: 0;
+      opacity: 1;
+    }
+
+    &.fifth {
+      left: 3.7vw;
+      opacity: 1;
+    }
+
+    &.sixth {
+      left: 7.4vw;
+      opacity: 1;
+    }
+
+}
+
+
