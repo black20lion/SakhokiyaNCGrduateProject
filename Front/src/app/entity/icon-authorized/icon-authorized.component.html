@@ -1,4 +1,4 @@
-<a target="_self" href="{{hrefs[index-1]}}" class="icon" (mouseover)="opacity = 1" (mouseleave)="opacity = 0.5"   [ngClass]="{
+<a routerLink="{{hrefs[index-1]}}" class="icon" (mouseover)="opacity = 1" (mouseleave)="opacity = 0.5"   [ngClass]="{
 first: (index === 1 && opacity === 0.5),
 second: (index === 2 && opacity === 0.5),
 third: (index === 3 && opacity === 0.5),

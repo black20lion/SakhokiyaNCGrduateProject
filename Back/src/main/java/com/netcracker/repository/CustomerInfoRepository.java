@@ -17,6 +17,9 @@ public interface CustomerInfoRepository extends JpaRepository<CustomerInfo, Inte
 
     List<CustomerInfo> findAll();
 
+    @Query(value = "select * from customer c left outer join customer_info ci\n" +
+            "on c.id = ci.customer_id where c.email = :email\n;", nativeQuery = true)
+    List<CustomerInfo> findAllByEmail(@Param("email") String email);
 
     @Modifying
     @Transactional

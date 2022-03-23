@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Icon} from "../../app.component";
+import {Icon} from "../main-page/main-page.component";
 
 @Component({
   selector: 'app-icon',
@@ -12,6 +12,8 @@ export class IconComponent implements OnInit {
   @Input() index!: number
 
   opacity: number = 0.5
+
+  hrefs: string[] =["#zatemnenie", "#zatemnenie", "#zatemnenie"]
 
   ngOnInit(): void {
   }

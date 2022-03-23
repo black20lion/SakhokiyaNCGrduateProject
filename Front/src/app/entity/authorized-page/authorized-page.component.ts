@@ -1,12 +1,14 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { Component, OnInit } from '@angular/core';
 
-import {Product} from "./domain/product";
-import {Offer} from "./domain/offer";
-import {Token} from "./domain/token";
-import {Category} from "./domain/category";
-import {UserInfo} from "./domain/userInfo";
-import {MainPageComponent} from "./entity/main-page/main-page.component";
+
+import {Product} from "../../domain/product";
+import {Offer} from "../../domain/offer";
+import {Token} from "../../domain/token";
+import {Category} from "../../domain/category";
+import {UserInfo} from "../../domain/userInfo";
+import {TokenServiceService} from "../../services/token-service/token-service.service";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 export interface Icon {
   width: number
@@ -26,28 +28,32 @@ export interface ProductCard {
 }
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'app-authorized-page',
+  templateUrl: './authorized-page.component.html',
+  styleUrls: ['./authorized-page.component.scss']
 })
-export class AppComponent implements OnInit, DoCheck {
+export class AuthorizedPageComponent implements OnInit {
+
+
 
   maleCategory!: Category[];
   femaleCategory!: Category[];
   products: Product[] = [];
   offers: Offer[] = [];
-  token!: Token;
   userInfo!: UserInfo;
 
+  token!: Token;
   password!: string;
   login!: string;
   email!: string;
+  error: any;
 
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
   modalWindowOpen: boolean = false;
 
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient, private router: Router) {
 
     this.http.get<Category[]>('http://localhost:8081/rest/categories/MALE').subscribe(result => {
       this.maleCategory = result;
@@ -73,12 +79,33 @@ export class AppComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     let x = 0;
+    let y = 0;
     if ((this.offers.length != 0 && this.products.length != 0)) {
       x++;
     }
     if (x === 1) {
       this.fillProductCards()
     }
+
+    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined)) {
+      y++;
+    }
+
+    if (y === 1) {
+      this.email = TokenServiceService.email;
+      this.token = TokenServiceService.token;
+    }
+
+    if (TokenServiceService.isAuthorized === false) {
+      this.router.navigate(['..']);
+    }
+
+  }
+
+  logOut() {
+    TokenServiceService.email = "";
+    TokenServiceService.token = new Token();
+    TokenServiceService.isAuthorized = false;
   }
 
   showFemaleMenu() {
@@ -204,9 +231,13 @@ export class AppComponent implements OnInit, DoCheck {
 
     this.http
       .post<Token>('http://localhost:8080/realms/shop/protocol/openid-connect/token', body.toString(), options)
-      .subscribe(result => {
+      .subscribe((result) => {
         this.token = result;
-        console.log(this.token.access_token)
+      }, (error) => {
+        this.error = error.message
+        console.log(error)
+      }, () => {
+        this.getUserInfo()
       });
   }
 
@@ -221,18 +252,14 @@ export class AppComponent implements OnInit, DoCheck {
         .subscribe(result => {
           this.userInfo = result;
           this.email = result.email;
-          console.log(this.email);
+        }, (error) => {
+          this.error = error.message
+          console.log(error)
+        }, () => {
+          TokenServiceService.token = this.token;
+          TokenServiceService.email = this.email;
         });
     }
   }
-
-  authorize() {
-    this.getToken();
-    setTimeout(() => {
-      this.getUserInfo();
-    }, 300);
-    this.getUserInfo();
-  }
-
 
 }

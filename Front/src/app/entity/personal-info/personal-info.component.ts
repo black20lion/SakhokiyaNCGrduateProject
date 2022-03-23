@@ -1,53 +1,28 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-
-import {Product} from "./domain/product";
-import {Offer} from "./domain/offer";
-import {Token} from "./domain/token";
-import {Category} from "./domain/category";
-import {UserInfo} from "./domain/userInfo";
-import {MainPageComponent} from "./entity/main-page/main-page.component";
-
-export interface Icon {
-  width: number
-  height: number
-  src: string
-  alt: string
-}
-
-export interface ProductCard {
-  productId: bigint
-  offerId: bigint
-  price: number
-  priceOverride: number
-  article: string
-  productName: string
-  imageUrl: string
-}
+import { Component, OnInit } from '@angular/core';
+import {Advanceduserinfo} from "../../domain/advanceduserinfo";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {Category} from "../../domain/category";
+import {Product} from "../../domain/product";
+import {Offer} from "../../domain/offer";
+import {TokenServiceService} from "../../services/token-service/token-service.service";
+import {UserInfo} from "../../domain/userInfo";
+import {Token} from "../../domain/token";
+import {Icon, ProductCard} from "../authorized-page/authorized-page.component";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'app-personal-info',
+  templateUrl: './personal-info.component.html',
+  styleUrls: ['./personal-info.component.scss']
 })
-export class AppComponent implements OnInit, DoCheck {
+export class PersonalInfoComponent implements OnInit {
 
-  maleCategory!: Category[];
-  femaleCategory!: Category[];
-  products: Product[] = [];
-  offers: Offer[] = [];
-  token!: Token;
-  userInfo!: UserInfo;
-
-  password!: string;
-  login!: string;
+  advancedUserInfo!: Advanceduserinfo;
+  methodHasBeenCalled: boolean = false;
+  ready: boolean = false;
   email!: string;
 
-  maleMenuShow: boolean = false;
-  femaleMenuShow: boolean = false;
-  modalWindowOpen: boolean = false;
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
 
     this.http.get<Category[]>('http://localhost:8081/rest/categories/MALE').subscribe(result => {
       this.maleCategory = result;
@@ -67,18 +42,62 @@ export class AppComponent implements OnInit, DoCheck {
 
   }
 
-  ngOnInit() {
+  showCustomerInfo(): void {
+    if (!this.methodHasBeenCalled) {
+      let options = {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
+        params: new HttpParams().set('email', "" + TokenServiceService.email)
+      };
 
+      this.email = TokenServiceService.email;
+
+      this.http
+        .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
+        .subscribe(result => {
+          this.advancedUserInfo = result;
+        });
+      this.methodHasBeenCalled = true;
+    }
+  }
+
+  ngOnInit(): void {
   }
 
   ngDoCheck() {
     let x = 0;
-    if ((this.offers.length != 0 && this.products.length != 0)) {
+    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined)) {
       x++;
     }
     if (x === 1) {
-      this.fillProductCards()
+      this.showCustomerInfo()
     }
+    if (this.advancedUserInfo != undefined) {
+      setTimeout(() => {
+        this.ready =true;
+      }, 500);
+    }
+  }
+
+  maleCategory!: Category[];
+  femaleCategory!: Category[];
+  products: Product[] = [];
+  offers: Offer[] = [];
+  userInfo!: UserInfo;
+
+  token!: Token;
+  password!: string;
+  login!: string;
+  error: any;
+
+  maleMenuShow: boolean = false;
+  femaleMenuShow: boolean = false;
+  modalWindowOpen: boolean = false;
+
+
+  logOut() {
+    TokenServiceService.email = "";
+    TokenServiceService.token = new Token();
+    TokenServiceService.isAuthorized = false;
   }
 
   showFemaleMenu() {
@@ -204,9 +223,13 @@ export class AppComponent implements OnInit, DoCheck {
 
     this.http
       .post<Token>('http://localhost:8080/realms/shop/protocol/openid-connect/token', body.toString(), options)
-      .subscribe(result => {
+      .subscribe((result) => {
         this.token = result;
-        console.log(this.token.access_token)
+      }, (error) => {
+        this.error = error.message
+        console.log(error)
+      }, () => {
+        this.getUserInfo()
       });
   }
 
@@ -221,18 +244,13 @@ export class AppComponent implements OnInit, DoCheck {
         .subscribe(result => {
           this.userInfo = result;
           this.email = result.email;
-          console.log(this.email);
+        }, (error) => {
+          this.error = error.message
+          console.log(error)
+        }, () => {
+          TokenServiceService.token = this.token;
+          TokenServiceService.email = this.email;
         });
     }
   }
-
-  authorize() {
-    this.getToken();
-    setTimeout(() => {
-      this.getUserInfo();
-    }, 300);
-    this.getUserInfo();
-  }
-
-
 }

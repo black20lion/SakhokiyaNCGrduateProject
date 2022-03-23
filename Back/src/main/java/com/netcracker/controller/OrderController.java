@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,7 @@ public class OrderController {
         return ResponseEntity.ok().body(orders);
     }
 
+    @RolesAllowed({"user", "admin"})
     @GetMapping("/orders/params")
     public ResponseEntity<List<Order>> getOrdersByParams(@Nullable @RequestParam(value = "customer_id") Long customerId,
                                                          @Nullable @RequestParam(value = "order_status") OrderStatus orderStatus,

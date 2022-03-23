@@ -1,0 +1,168 @@
+<div class="container" xmlns="http://www.w3.org/1999/html">
+  <header>
+    <div>
+      <img id="logo" width=200 height=169 src="../assets/img/logo/logo.jpeg" alt="Магазин Lion's Style"/>
+      <span id="city">г. Нижний Новгород </span>
+      <span id="phone">8(999)120-8858</span>
+      <span id="menuIcons">
+      <app-icon
+        *ngFor="let iterIcon of icons; let idx = index"
+        [icon]="iterIcon"
+        [index]="idx+1">
+      </app-icon>
+      </span>
+    </div>
+
+    <span id="forWomen" (mouseover)="showFemaleMenu()" (mouseleave)="hideFemaleMenu()" [ngClass]="{selected: femaleMenuShow === true}">
+      Женщинам
+    </span>
+
+    <span id="forMen" (mouseover)="showMaleMenu()" (mouseleave)="hideMaleMenu()" [ngClass]="{selected: maleMenuShow === true}">
+      Мужчинам
+    </span>
+
+    <span id="sale">
+      Распродажа
+    </span>
+
+    <span id="novelty">
+      Новинки
+    </span>
+
+    <span id="aboutMenu">
+      О нас
+    </span>
+  </header>
+
+  <body [ngClass]="{
+    scrollHidden: (modalWindowOpen),
+    scrollShowed: (!modalWindowOpen)
+    }">
+  <div id="zatemnenie" (mouseover)="hideScroll()" (mouseleave)="showScroll()">
+    <div id="okno" (mouseover)="hideScroll()">
+      <h1>Личный кабинет</h1><br>
+      <a href="#" class="close"><img src="../../../assets/img/icons/cross.jpg"></a>
+      <p id="mainprompt">Введите логин и пароль <span style="color: red">*</span></p>
+
+      <p>Логин</p>
+      <input (input)="changeLogin($event)">
+
+      <p>Пароль</p>
+      <input type="password" (input)="changePassword($event)">
+      <p></p>
+
+      <a id="toPersonalAccount"><button id="enter" (click)="getToken()">ВОЙТИ</button></a>
+      <a id="forgetPassword">Забыли пароль?</a>
+      <a id="registrationLink" href="http://localhost:8080/realms/shop/protocol/openid-connect/auth?client_id=account-console&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Frealms%2Fshop%2Faccount%2F%23%2F&state=a0d10cf1-9616-48a0-869b-0214dfa29c0b&response_mode=fragment&response_type=code&scope=openid&nonce=235a233e-cecd-4798-8934-e89c6c4d45c1&code_challenge=MKo9hNkR9oC_7mVdOR7AubvdgpcNCMshjcL0tpYcV8I&code_challenge_method=S256"><button id="registration">РЕГИСТРАЦИЯ</button></a>
+    </div>
+  </div>
+
+
+
+  <div id="bestOffers">
+    <h1>Лучшие предложения</h1>
+    <div id="boCards">
+      <app-product-card
+        *ngFor="let iterProductCard of bestOffers; let idx = index"
+        [productCard]="iterProductCard"
+        [index]="idx+1">
+      </app-product-card>
+    </div>
+  </div>
+
+  <div id="mainAbout">
+    <h4>О компании</h4>
+    <img id="mainAboutPic" src="../assets/img/main/about.jpeg" alt="Магазин Lion's Style"/>
+    <h1>Lion's style - интернет-магазин мужской и женской одежды</h1>
+
+    <p>
+      Lion's style – место, где каждый сможет найти одежду по душе.
+      Поставщики из Европы, России, Белоруссии и Молдавии обеспичивают лучшее качество,
+      а успешный мендежмент нашей компании позволяет предлагать цены ниже чем у конкурентов.
+      Магазин широко известен в Нижнем Новгороде и Нижегородской области.
+    </p>
+    <p>
+      Мы работаем с такими брендами как Louis Vuitton, D&G, Chanel, Zilli и многими другими,
+      а также часто устраиваем акции и розыгрыши в официльных сообществах магазина во вконтакте и Instagram.
+    </p>
+    <p>
+      Lion's style – это качественная одежда, доступная для всех. Lion's style – это стильные вещи трендовых фасонов и
+      разнообразных
+      цветов. Lion's style – это вдохновение классики и яркий акцент в любом образе. Lion's style – это настоящий
+      львиный стиль!
+    </p>
+    <button>ПОДРОБНОСТИ</button>
+
+  </div>
+
+  <div id="femaleCategories" (mouseover)="showFemaleMenu()" (mouseleave)="hideFemaleMenu()">
+    <ul *ngIf="(femaleCategory&&femaleMenuShow)">
+      <li *ngFor="let iterCategory of femaleCategory"><hr> {{(iterCategory.name | json).substring(1, iterCategory.name.length+1)}}</li>
+    </ul>
+  </div>
+
+  <div id="maleCategories" (mouseover)="showMaleMenu()" (mouseleave)="hideMaleMenu()">
+    <ul *ngIf="(maleCategory&&maleMenuShow)">
+      <li *ngFor="let iterCategory of maleCategory"><hr> {{(iterCategory.name | json).substring(1, iterCategory.name.length+1)}}</li>
+    </ul>
+  </div>
+
+  <footer style="color: white">
+    <div id="footerAbout">
+      <ul>
+        <li id="footerAboutHeader"><a>КОМПАНИЯ</a></li>
+        <li><a>О компании</a></li>
+        <li><a>Новости</a></li>
+        <li><a>Работа у нас</a></li>
+        <li><a>Контакты</a></li>
+        <li><a>Оптовая торговля</a></li>
+        <li><a>Карта рассрочки</a></li>
+        <li><a>Подарочные карты</a></li>
+      </ul>
+    </div>
+
+    <div id="footerInfo">
+      <ul>
+        <li id="footerInfoHeader"><a>ИНФОРМАЦИЯ</a></li>
+        <li><a>Магазины</a></li>
+        <li><a>Условия оплаты</a></li>
+        <li><a>Условия доставки</a></li>
+        <li><a>Возврат</a></li>
+        <li id="footerConfidentialPolicy"><a>Политика<br>конфиденциальности</a></li>
+      </ul>
+    </div>
+
+    <div class="social vk">
+      <a href="#" target="_blank"><i class="fa fa-vk fa-2x"></i></a>
+    </div>
+
+    <div class="social instagram">
+      <a href="#" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+    </div>
+
+    <div class="social telegram">
+      <a href="#" target="_blank"><i class="fa fa-paper-plane fa-2x"></i></a>
+    </div>
+
+    <div class="social whatsapp">
+      <a href="#" target="_blank"><i class="fa fa-whatsapp fa-2x"></i></a>
+    </div>
+
+    <hr id="leftFooterLine">
+
+    <hr id="rightFooterLine">
+
+    <a id="footerInfoEnding">2022 © Lion-style.ru – Интернет-магазин одежды </a>
+
+    <img id="masterCard" src="assets/img/icons/mastercard.png">
+    <img id="visa" src="assets/img/icons/visa.png">
+    <img id="mir" src="assets/img/icons/mir.svg">
+    <button id="subscribe">ПОДПИСАТЬСЯ НА РАССЫЛКУ <img id="letter" src="assets/img/icons/letter.png"> </button>
+
+    <a id="footerPhone">8 (999) 120-8858</a>
+    <img id="footerPhoneIcon" src="assets/img/icons/phone.png">
+
+  </footer>
+  </body>
+
+</div>

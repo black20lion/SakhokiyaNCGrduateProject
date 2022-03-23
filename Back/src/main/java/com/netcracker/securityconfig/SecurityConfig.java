@@ -59,8 +59,4 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 //        http.csrf().disable();
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
-    }
 }

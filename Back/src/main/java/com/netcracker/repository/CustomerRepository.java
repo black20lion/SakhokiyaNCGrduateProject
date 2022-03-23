@@ -12,26 +12,23 @@ import java.util.List;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+
     List<Customer> findAll();
 
     List<Customer> findAllById(Long id);
 
-//    List<Customer> findAllByEMail(String email);
+    List<Customer> findAllByEmail(String email);
 
     <S extends Customer> S save(S entity);
 
     @Modifying
     @Transactional
     @Query(value = "BEGIN;\n" +
-            "insert into customer (email, password_hash, salt)\n " +
+            "insert into customer (email)\n " +
             "values ( " +
-            " :email,  " +
-            " :passwordHash, " +
-            " :salt); " +
+            " :email; " +
             "COMMIT;", nativeQuery = true)
-    void createCustomer(@Param("email") String email,
-                        @Param("passwordHash") String passwordHash,
-                        @Param("salt") String salt);
+    void createCustomer(@Param("email") String email);
 
     @Query(value = "select * from lastval()", nativeQuery = true)
     List<Long> getUserId();

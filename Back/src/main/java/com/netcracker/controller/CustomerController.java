@@ -1,8 +1,10 @@
 package com.netcracker.controller;
 
 import com.netcracker.domain.Customer;
+import com.netcracker.domain.CustomerInfo;
 import com.netcracker.domain.enumeration.Gender;
 import com.netcracker.service.CustomerService;
+import org.keycloak.representations.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +35,7 @@ public class CustomerController {
     }
 
     @GetMapping("")
+    @RolesAllowed("admin")
     public ResponseEntity<List<Customer>> getAllUsers() {
         return ResponseEntity.ok(customerService.getAll());
     }
@@ -42,10 +45,12 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getUserById(id));
     }
 
-    @GetMapping("/accessToken")
-    public ResponseEntity<String> getAccessToken() {
-        return ResponseEntity.ok(customerService.getAccessToken());
+    @RolesAllowed("user")
+    @GetMapping("/email")
+    public ResponseEntity<CustomerInfo> getCustomerInfoByEmail(@RequestParam(value = "email") String email) {
+        return ResponseEntity.ok(customerService.getUserInfoByEmail(email));
     }
+
 
     @PostMapping("/updateUserInfo")
     public ResponseEntity<String> updateUserInfo(@RequestParam(value = "customerId") Long customerId,

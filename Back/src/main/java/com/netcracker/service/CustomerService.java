@@ -1,16 +1,15 @@
 package com.netcracker.service;
 
 import com.netcracker.domain.Customer;
+import com.netcracker.domain.CustomerInfo;
 import com.netcracker.repository.CustomerInfoRepository;
 import com.netcracker.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,11 +28,6 @@ public class CustomerService {
 
     @Autowired
     CustomerInfoRepository customerInfoRepository;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    private final String localParameter = "lkadsjfAffasGSGJYKI43d9f2jfASADSDFf232oFSGkjnfAWF23sg2sgrssgsjifqQsgEsgsfsdRsT2sg324";
 
     public List<Customer> getAll() {
         return customerRepository.findAll();
@@ -85,20 +79,11 @@ public class CustomerService {
         }
     }
 
-    public String registerBase(String email, String password) {
-        String salt = generateSalt().toString();
-        String hashedRow = localParameter + salt + password;
-        String hash = bCryptPasswordEncoder.encode(hashedRow);
-        customerRepository.createCustomer(email, hash, salt);
+    public String registerBase(String email) {
+        customerRepository.createCustomer(email);
         return "User is successfully added";
     }
 
-    public byte[] generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[8];
-        random.nextBytes(bytes);
-        return bytes;
-    }
 
     public String registerKeyCloak(String firstName, String lastName, String email, String password) throws IOException {
         String urlParameters = "{\"firstName\":\"" + firstName + "\", \"lastName\":\"" + lastName + "\", \"email\":\"" + email + "\", \"enabled\":\"true\"}";
@@ -150,7 +135,7 @@ public class CustomerService {
         }
 
         try {
-            registerBase(email, password);
+            registerBase(email);
             customerInfoRepository.registerCustomerInfo(customerRepository.getUserId().get(0), firstName, lastName);
         } catch (Throwable throwable) {
             deleteUserById(getUserKeycloakIdByUsername(email));
@@ -327,8 +312,6 @@ public class CustomerService {
         } catch (ParseException exception) {
             error = true;
         }
-
-
         if (birthDate == null || error || utilDate == null) {
             customerInfoRepository.updateCustomerInfoDateNull(customerId, firstName, lastName, gender, phoneNumber, lastDeliveryAddress);
         } else {
@@ -336,6 +319,14 @@ public class CustomerService {
             customerInfoRepository.updateCustomerInfo(customerId, firstName, lastName, gender, phoneNumber, lastDeliveryAddress, parsedBirthDate);
         }
         return "Information is successfully updated";
+    }
+
+    public CustomerInfo getUserInfoByEmail (String email) {
+        return customerInfoRepository.findAllByEmail(email).get(0);
+    }
+
+    public List<Customer> getUserByEmail (String email) {
+        return customerRepository.findAllByEmail(email);
     }
 }
 
