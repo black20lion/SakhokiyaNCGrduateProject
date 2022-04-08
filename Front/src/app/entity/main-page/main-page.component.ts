@@ -216,6 +216,8 @@ export class MainPageComponent implements OnInit, DoCheck {
         this.error = error.message
       console.log(error)
       }, () => {
+        console.log(this.token.access_token);
+        TokenServiceService.loadRefreshTokenTimer();
         this.getUserInfo();
       });
   }

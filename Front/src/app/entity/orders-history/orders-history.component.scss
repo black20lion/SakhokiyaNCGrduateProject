@@ -220,7 +220,7 @@ table#personnelNavigation {
 span#topNavigation {
   position: relative;
   top: 10vw;
-  left:51.5vw;
+  left:43.5vw;
 
   a{
     font-size: 1.4vw;
@@ -236,7 +236,15 @@ span#topNavigation {
     opacity: 0.5;
   }
 
+  a#dash2 {
+    opacity: 0.5;
+  }
+
   a#toPersonnel {
+    opacity: 0.5;
+  }
+
+  a#toOrdersHistory {
     opacity: 0.5;
   }
 
@@ -247,6 +255,11 @@ span#topNavigation {
   a#toPersonnel:hover {
     opacity: 1;
   }
+
+  a#toOrdersHistory:hover {
+    opacity: 1;
+  }
+
 }
 
 button {

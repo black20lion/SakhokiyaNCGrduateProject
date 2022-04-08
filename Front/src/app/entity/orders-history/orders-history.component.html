@@ -58,9 +58,11 @@
   <h1 id="personnel">История заказов</h1>
 
   <span id="topNavigation">
-    <a id="toMainPage" routerLink="..">Главная</a>
+    <a id="toMainPage" routerLink="../..">Главная</a>
     <a id="dash"> — </a>
-    <a id="toPersonnel" routerLink=".">Личный кабинет</a>
+    <a id="toPersonnel" routerLink="..">Личный кабинет</a>
+    <a id="dash2"> — </a>
+    <a id="toOrdersHistory" routerLink=".">История заказов</a>
   </span>
 
   <table id="personnelNavigation" border="1">
@@ -79,33 +81,6 @@
   </table>
 
 
-  <p *ngIf="ready">
-    Имя: {{advancedUserInfo.firstName}}
-  </p>
-
-  <p *ngIf="ready">
-    Фамилия: {{advancedUserInfo.lastName}}
-  </p>
-
-  <p *ngIf="ready">
-    Логин: {{email}}
-  </p>
-
-  <p *ngIf="ready">
-    Телефон: {{advancedUserInfo.phoneNumber}}
-  </p>
-
-  <p *ngIf="ready">
-    Адрес доставки: {{advancedUserInfo.lastDeliveryAddress}}
-  </p>
-
-  <p *ngIf="ready">
-    Пол: {{advancedUserInfo.gender}}
-  </p>
-
-  <p *ngIf="ready">
-    Дата рождения: {{advancedUserInfo.birthDate}}
-  </p>
 
   <footer style="color: white">
     <div id="footerAbout">

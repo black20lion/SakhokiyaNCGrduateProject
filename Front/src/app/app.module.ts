@@ -17,6 +17,8 @@ import {IconAuthorizedComponent} from "./entity/icon-authorized/icon-authorized.
 import { PersonalInfoComponent } from './entity/personal-info/personal-info.component';
 import { CurrentOrdersComponent } from './entity/current-orders/current-orders.component';
 import { OrdersHistoryComponent } from './entity/orders-history/orders-history.component';
+import { RegistrationSuccessComponent } from './entity/registration-success/registration-success.component';
+import {CookieService} from "ngx-cookie-service";
 
 registerLocaleData(localeRu, 'ru')
 
@@ -26,7 +28,8 @@ const routes = [
   {path: 'authorized', component: AuthorizedPageComponent},
   {path: 'authorized/account/personal-info', component: PersonalInfoComponent},
   {path: 'authorized/account/current-orders', component: CurrentOrdersComponent},
-  {path: 'authorized/account/orders-history', component: OrdersHistoryComponent}
+  {path: 'authorized/account/orders-history', component: OrdersHistoryComponent},
+  {path: 'registration-success', component: RegistrationSuccessComponent}
 ]
 
 @NgModule({
@@ -40,7 +43,8 @@ const routes = [
     IconAuthorizedComponent,
     PersonalInfoComponent,
     CurrentOrdersComponent,
-    OrdersHistoryComponent
+    OrdersHistoryComponent,
+    RegistrationSuccessComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +52,7 @@ const routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [TokenServiceService],
+  providers: [TokenServiceService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

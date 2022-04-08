@@ -4,7 +4,6 @@
       <img id="logo" width=200 height=169 src="../assets/img/logo/logo.jpeg" alt="Магазин Lion's Style"/>
       <span id="city">г. Нижний Новгород </span>
       <span id="phone">8(999)120-8858</span>
-      <span id="markUserIsAuthorized">Вы вошли как {{email}}</span>
       <span id="menuIcons">
       <app-icon-authorized
         *ngFor="let iterIcon of icons; let idx = index"
@@ -36,7 +35,6 @@
       О нас
     </span>
 
-    <a id="logout" (click)="logOut()">Выйти из аккаунта</a>
   </header>
 
   <div id="femaleCategories" (mouseover)="showFemaleMenu()" (mouseleave)="hideFemaleMenu()">
@@ -55,38 +53,23 @@
     </ul>
   </div>
   <body>
-  <h1 id="personnel">Текущие заказы</h1>
 
-  <span id="topNavigation">
-    <a id="toMainPage" routerLink="../..">Главная</a>
-    <a id="dash"> — </a>
-    <a id="toPersonnel" routerLink="..">Личный кабинет</a>
-    <a id="dash2"> — </a>
-    <a id="toCurrentOrders" routerLink=".">Текущие заказы</a>
-  </span>
+  <div id="authAfterRegister" (mouseover)="hideScroll()">
+    <p id="congrats">Поздравляем, регистрация прошла успешно!</p>
+    <p id="please">Пожалуйста, введите данные повторно, чтобы войти в аккаунт</p>
+    <p>Логин</p>
+    <input (input)="changeLogin($event)">
 
-  <table id="personnelNavigation" border="1">
-    <tr>
-      <td>Личный кабинет</td>
-    </tr>
-    <tr>
-      <td>Персональные данныe</td>
-    </tr>
-    <tr>
-      <td>Текущие заказы</td>
-    </tr>
-    <tr>
-      <td>История заказов</td>
-    </tr>
-  </table>
+    <p>Пароль</p>
+    <input type="password" (input)="changePassword($event)">
+    <p></p>
 
-  <div id="showCurrentOrders" *ngFor="let currentOrder of orders">
-    <p>Заказ # {{currentOrder.id}} от {{currentOrder.dateTime}} на сумму {{currentOrder.totalPrice}}</p>
-    <p>Тип доставки: {{currentOrder.deliveryType}}</p>
-    <p>Статус заказа: {{currentOrder.orderStatus}}</p>
-    <p>Статус оплаты: {{currentOrder.payStatus}}</p>
-    <p>Стутус доставки: {{currentOrder.deliveryStatus}}</p>
+    <a id="toPersonalAccount">
+      <button id="enter" (click)="getToken()">ВОЙТИ</button>
+    </a>
+
   </div>
+
 
   <footer style="color: white">
     <div id="footerAbout">
