@@ -103,9 +103,7 @@ export class AuthorizedPageComponent implements OnInit {
   }
 
   logOut() {
-    TokenServiceService.email = "";
-    TokenServiceService.token = new Token();
-    TokenServiceService.isAuthorized = false;
+    TokenServiceService.keycloakLogOut(this.http);
   }
 
   showFemaleMenu() {

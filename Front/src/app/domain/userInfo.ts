@@ -4,6 +4,6 @@ export class UserInfo {
   name!: string;
   preferred_username!: string;
   given_name!: string;
-  familiy_name!: string;
+  family_name!: string;
   email!: string;
 }

@@ -9,6 +9,7 @@ import {TokenServiceService} from "../../services/token-service/token-service.se
 import {UserInfo} from "../../domain/userInfo";
 import {Token} from "../../domain/token";
 import {Icon, ProductCard} from "../authorized-page/authorized-page.component";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-registration-success',
@@ -21,44 +22,21 @@ export class RegistrationSuccessComponent implements OnInit {
   methodHasBeenCalled: boolean = false;
   ready: boolean = false;
   email!: string;
+  hasBeenInitialized: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
 
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/MALE').subscribe(result => {
-      this.maleCategory = result;
-    });
-
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/FEMALE').subscribe(result => {
-      this.femaleCategory = result;
-    });
-
-    this.http.get<Product[]>('http://localhost:8081/rest/products').subscribe(result => {
-      this.products = result;
-    });
-
-    this.http.get<Offer[]>('http://localhost:8081/rest/offers').subscribe(result => {
-      this.offers = result;
-    });
-
-  }
-
-  showCustomerInfo(): void {
-    if (!this.methodHasBeenCalled) {
-      let options = {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
-        params: new HttpParams().set('email', "" + TokenServiceService.email)
-      };
-
-      this.email = TokenServiceService.email;
-
-      this.http
-        .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
-        .subscribe(result => {
-          this.advancedUserInfo = result;
-        });
-      this.methodHasBeenCalled = true;
+    let URL = window.location.href;
+    this.code = URL.substring(142, URL.length);
+    this.state = URL.substring(49, 85);
+    console.log(this.code);
+    console.log(this.state)
+    if (!this.hasBeenInitialized) {
+      this.getToken();
+      this.hasBeenInitialized=true;
     }
   }
+
 
   ngOnInit(): void {
   }
@@ -69,11 +47,11 @@ export class RegistrationSuccessComponent implements OnInit {
       x++;
     }
     if (x === 1) {
-      this.showCustomerInfo()
+
     }
     if (this.advancedUserInfo != undefined) {
       setTimeout(() => {
-        this.ready =true;
+        this.ready = true;
       }, 500);
     }
     if (TokenServiceService.isAuthorized === true) {
@@ -91,6 +69,8 @@ export class RegistrationSuccessComponent implements OnInit {
   password!: string;
   login!: string;
   error: any;
+  code!: string;
+  state!:string;
 
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
@@ -168,42 +148,6 @@ export class RegistrationSuccessComponent implements OnInit {
 
   productCardsFilled = false;
 
-  fillProductCards() {
-    if (!this.productCardsFilled) {
-      for (let i = 0; i < this.offers.length; i++) {
-        this.currentProduct = this.getProductById(this.offers[i].productId);
-
-        this.currentProductCard = {
-          productId: this.currentProduct.id,
-          offerId: this.offers[i].id,
-          price: this.offers[i].price,
-          priceOverride: this.offers[i].price_override,
-          article: this.currentProduct.article,
-          productName: this.currentProduct.productName,
-          imageUrl: this.currentProduct.imageUrl
-        }
-        this.productCards.push(this.currentProductCard)
-      }
-
-      this.productCardsUniqueArticle = this.productCards;
-      let articleList: string[] = [];
-
-      for (let i = this.productCardsUniqueArticle.length - 1; i >= 0; i--) {
-        if (articleList.includes(this.productCardsUniqueArticle[i].article)) {
-          this.productCardsUniqueArticle.splice(i, 1);
-        } else {
-          articleList.push(this.productCardsUniqueArticle[i].article)
-        }
-      }
-
-      this.bestOffers.push(this.productCardsUniqueArticle[0]);
-      this.bestOffers.push(this.productCardsUniqueArticle[1]);
-      this.bestOffers.push(this.productCardsUniqueArticle[2]);
-      this.bestOffers.push(this.productCardsUniqueArticle[3]);
-      this.bestOffers.push(this.productCardsUniqueArticle[4]);
-      this.productCardsFilled = true
-    }
-  }
 
   changeLogin(event: any) {
     this.login = event.target.value;
@@ -213,12 +157,13 @@ export class RegistrationSuccessComponent implements OnInit {
     this.password = event.target.value;
   }
 
+
   getToken(): void {
     let body = new URLSearchParams();
-    body.set('username', this.login);
-    body.set('password', this.password);
     body.set('client_id', "springboot-keycloak");
-    body.set('grant_type', "password");
+    body.set('grant_type', "authorization_code");
+    body.set('redirect_uri', "http://localhost:4200/registration-success");
+    body.set('code', this.code);
 
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
@@ -253,6 +198,11 @@ export class RegistrationSuccessComponent implements OnInit {
           this.error = error.message
           console.log(error)
         }, () => {
+          console.log(this.userInfo.given_name)
+          console.log(this.userInfo.family_name)
+          console.log(this.userInfo.email)
+          console.log(this.cookieService.get('JSESSIONID'))
+          this.createUser();
           TokenServiceService.token = this.token;
           TokenServiceService.email = this.email;
           TokenServiceService.isAuthorized = true;
@@ -260,5 +210,25 @@ export class RegistrationSuccessComponent implements OnInit {
         });
     }
   }
+
+  createUser():void {
+
+
+
+    this.http
+      .post<string>('http://localhost:8081/rest/users/createUser', null, {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token.access_token.toString()),
+        params: new HttpParams().set('firstName', this.userInfo.given_name).set('lastName', this.userInfo.family_name).set('email', this.userInfo.email)
+      })
+      .subscribe(result => {
+        console.log('result')
+      }, (error) => {
+        this.error = error.message
+        console.log(error)
+      }, () => {
+
+      });
+  }
+
 
 }

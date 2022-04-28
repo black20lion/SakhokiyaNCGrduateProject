@@ -827,6 +827,13 @@ footer {
 
 #authAfterRegister {
 
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 27vw;
+  top: 14.5vw;
+  margin: 0;
+
   font-size: 1.5vw;
   width: 50vw;
   height: 15.7vw;
@@ -834,12 +841,6 @@ footer {
   padding: 15px;
   border-radius: 3px;
   color: black;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: -10vw;
-  margin: auto;
   background: white;
   z-index: -1000;
 
