@@ -26,10 +26,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query(value = "BEGIN;\n" +
             "insert into customer (email)\n " +
             "values ( " +
-            " :email; " +
+            " :email );" +
             "COMMIT;", nativeQuery = true)
     void createCustomer(@Param("email") String email);
 
     @Query(value = "select * from lastval()", nativeQuery = true)
-    List<Long> getUserId();
+    List<String> getUserId();
 }

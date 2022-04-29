@@ -4,7 +4,6 @@ import com.netcracker.domain.Customer;
 import com.netcracker.domain.CustomerInfo;
 import com.netcracker.domain.enumeration.Gender;
 import com.netcracker.service.CustomerService;
-import org.keycloak.representations.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Email;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
 
 
@@ -25,13 +23,12 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-
+    @RolesAllowed("user")
     @PostMapping("/createUser")
     public ResponseEntity<String> registerCustomer(@RequestParam(value = "firstName") String firstName,
                                                    @RequestParam(value = "lastName") String lastName,
-                                                   @Email @RequestParam(value = "email") String email,
-                                                   @RequestParam(value = "password") String password) throws IOException {
-        return ResponseEntity.ok(customerService.register(firstName, lastName, email, password));
+                                                   @RequestParam(value = "email") String email) throws IOException {
+        return ResponseEntity.ok(customerService.register(firstName, lastName, email));
     }
 
     @GetMapping("")
@@ -63,10 +60,5 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.updateCustomerInfo(customerId, firstName, lastName, gender.toString(), phoneNumber, lastDeliveryAddress, birthDate));
     }
 
-    @GetMapping("/authorize")
-    @RolesAllowed("user")
-    public ResponseEntity<String> authorizeUser() {
-        return ResponseEntity.ok("User is authorized");
-    }
 
 }

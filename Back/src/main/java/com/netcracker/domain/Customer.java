@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
-//@EqualsAndHashCode(callSuper=false)
 @Builder
 @Entity
 @Table(name = "customer")

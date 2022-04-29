@@ -79,108 +79,18 @@ public class CustomerService {
         }
     }
 
-    public String registerBase(String email) {
+    public String register(String firstName, String lastName, String email) {
         customerRepository.createCustomer(email);
-        return "User is successfully added";
+        String currentId = customerRepository.getUserId().get(0);
+        int currentIntId = Integer.parseInt(currentId);
+        Long currentLongId = new Long(currentIntId);
+        System.out.println(currentId);
+        customerInfoRepository.registerCustomerInfo(currentLongId , firstName, lastName);
+        return "OK";
     }
 
 
-    public String registerKeyCloak(String firstName, String lastName, String email, String password) throws IOException {
-        String urlParameters = "{\"firstName\":\"" + firstName + "\", \"lastName\":\"" + lastName + "\", \"email\":\"" + email + "\", \"enabled\":\"true\"}";
-        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-        int postDataLength = postData.length;
-        String request = "http://localhost:8080/admin/realms/shop/users";
-        URL url = new URL(request);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-        con.setDoOutput(true);
-        con.setInstanceFollowRedirects(false);
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer " + getAccessToken());
-        con.setRequestProperty("charset", "utf-8");
-        con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-        con.setUseCaches(false);
-        con.setConnectTimeout(5000);
-        con.setReadTimeout(5000);
-
-        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.write(postData);
-        }
-
-        int status = con.getResponseCode();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
-        con.disconnect();
-
-        setUserPassword(password, getUserKeycloakIdByUsername(email));
-        setUserRole(getUserKeycloakIdByUsername(email));
-
-        return "User is successfully added";
-    }
-
-    public String register(String firstName, String lastName, String email, String password) {
-        try {
-            registerKeyCloak(firstName, lastName, email, password);
-        } catch (IOException exception) {
-            if (exception.toString().contains("409")) {
-                return "User with this email already exists";
-            } else return "Registration error";
-        }
-
-        try {
-            registerBase(email);
-            customerInfoRepository.registerCustomerInfo(customerRepository.getUserId().get(0), firstName, lastName);
-        } catch (Throwable throwable) {
-            deleteUserById(getUserKeycloakIdByUsername(email));
-            if (throwable instanceof DataIntegrityViolationException) {
-                if (throwable.getMessage().contains("unique_email")) {
-                    return "User with this email already exists";
-                } else return "database error";
-            } else{
-                throwable.printStackTrace();return "unknown error";}
-        }
-        return "User is successfully added";
-    }
-
-    public String getUserKeycloakIdByUsername(String email) {
-        try {
-            String accessToken = getAccessToken();
-            String request = "http://localhost:8080/admin/realms/shop/users?username=" + email;
-            URL url = new URL(request);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-            con.setInstanceFollowRedirects(false);
-
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", "Bearer " + accessToken);
-            con.setUseCaches(false);
-            con.setConnectTimeout(5000);
-            con.setReadTimeout(5000);
-            con.setDoOutput(true);
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-            String result = content.substring(8, 44);
-            return result;
-        } catch (
-                IOException exception) {
-            return exception.toString();
-        }
-    }
 
     public String setUserPassword(String password, String id) {
         try {
@@ -258,49 +168,7 @@ public class CustomerService {
         }
     }
 
-    public String setUserRole(String id) {
-        try {
-            String urlParameters = "[{\"id\":\"01721490-e61f-4a3a-a3eb-9fc2a52790e6\",\"name\":\"user\"}]";
-            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-            int postDataLength = postData.length;
-            String accessToken = getAccessToken();
 
-            String request = "http://localhost:8080/admin/realms/shop/users/" + id + "/role-mappings/realm";
-            URL url = new URL(request);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setInstanceFollowRedirects(false);
-
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Authorization", "Bearer " + accessToken);
-            con.setRequestProperty("charset", "utf-8");
-
-            con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-            con.setUseCaches(false);
-            con.setConnectTimeout(5000);
-            con.setReadTimeout(5000);
-            con.setDoOutput(true);
-
-            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-                wr.write(postData);
-            }
-
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-            return content.toString();
-        } catch (
-                IOException exception) {
-            return exception.toString();
-        }
-    }
 
     public String updateCustomerInfo(Long customerId, String firstName, String lastName, String gender, String phoneNumber, String lastDeliveryAddress, String birthDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
