@@ -12,4 +12,19 @@ crossedOut: (productCard.priceOverride != undefined)}">
     {{productCard.price}} руб.
   </a></p>
   <p style="margin-top: 0">{{productCard.productName}}</p>
+
+<a id="plus">
+
+  <button id="addToBasket" (click)="add()">
+    +
+  </button>
+</a>
+
+  <a id="minus" [ngClass]="{
+inactive: (inCart === 0)}">
+   <button id="addToBasket2" (click)="delete()">
+    –
+  </button>
+    </a>
+
 </span>

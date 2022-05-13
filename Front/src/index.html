@@ -8,6 +8,126 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <app-root></app-root>
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ChiefSlider [Example 4]</title>
+
+  <link rel="stylesheet" href="https://itchief.ru/examples/libs/chief-slider/chief-slider.min.css">
+  <script defer src="https://itchief.ru/examples/libs/chief-slider/chief-slider.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const slider = new ChiefSlider('.slider', {
+        loop: true,
+        autoplay: true,
+        interval: 7000,
+      });
+    });
+  </script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      /*box-sizing: border-box;*/
+    }
+
+
+    .slider__wrapper {
+      overflow: hidden;
+    }
+
+    .slider__item {
+      flex: 0 0 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1vw;
+    }
+
+    .slider__item:nth-child(1) {
+      background-color: #ffffff;
+    }
+
+    .slider__item:nth-child(2) {
+      background-color: #ffffff;
+    }
+
+    .slider__item:nth-child(3) {
+      background-color: #ffffff;
+    }
+
+    .slider__item:nth-child(4) {
+      background-color: #ffffff;
+    }
+
+    .slider__item:nth-child(5) {
+      background-color: #ffffff;
+    }
+  </style>
+
+</head>
+
+
+  <div class="slider" style="position: absolute; top: 15vw; left: 0vw; width: 99vw;">
+    <div class="slider__wrapper">
+      <div class="slider__items">
+
+        <div class="slider__item" style="height: 30vw">
+          <a>
+            <img src="assets/banners/banner1.jpeg" height="485" style="height: 30vw">
+          </a>
+        </div>
+
+        <div class="slider__item" style="height: 30vw">
+          <a>
+            <img src="assets/banners/banner2.jpeg" height="485" style="height: 30vw">
+          </a>
+        </div>
+
+        <div class="slider__item" style="height: 30vw">
+          <a>
+            <img src="assets/banners/banner3.jpeg" height="485" style="height: 30vw">
+          </a>
+        </div>
+        <div class="slider__item" style="height: 30vw">
+          <a>
+          <img src="assets/banners/banner4.jpg" height="485" style="height: 30vw">
+          </a>
+        </div>
+
+        <div class="slider__item" style="height: 30vw">
+          <a>
+          <img src="assets/banners/banner5.jpeg" height="485" style="height: 30vw">
+          </a>
+        </div>
+
+      </div>
+    </div>
+    <a href="#" class="slider__control" data-slide="prev"></a>
+    <a href="#" class="slider__control" data-slide="next"></a>
+
+    <ol class="slider__indicators" style="position: relative; top: -40px">
+      <li style="max-width: 2vw; max-height: 0.4vw" data-slide-to="0"></li>
+      <li style="max-width: 2vw; max-height: 0.4vw" data-slide-to="1"></li>
+      <li style="max-width: 2vw; max-height: 0.4vw" data-slide-to="2"></li>
+      <li style="max-width: 2vw; max-height: 0.4vw" data-slide-to="3"></li>
+      <li style="max-width: 2vw; max-height: 0.4vw" data-slide-to="4"></li>
+    </ol>
+  </div>
+
+
+</html>
+
+
+<app-root></app-root>
 </body>
 </html>

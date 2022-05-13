@@ -12,6 +12,7 @@ import { PersonalAccountComponent } from './entity/personal-account/personal-acc
 import {RouterModule} from "@angular/router";
 import { MainPageComponent } from './entity/main-page/main-page.component';
 import {TokenServiceService} from "./services/token-service/token-service.service";
+import {CartServiceService} from "./services/cart-service/cart-service.service";
 import { AuthorizedPageComponent} from "./entity/authorized-page/authorized-page.component";
 import {IconAuthorizedComponent} from "./entity/icon-authorized/icon-authorized.component";
 import { PersonalInfoComponent } from './entity/personal-info/personal-info.component';
@@ -52,7 +53,7 @@ const routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [TokenServiceService, CookieService],
+  providers: [TokenServiceService, CookieService, CartServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
