@@ -20,6 +20,10 @@ import { CurrentOrdersComponent } from './entity/current-orders/current-orders.c
 import { OrdersHistoryComponent } from './entity/orders-history/orders-history.component';
 import { RegistrationSuccessComponent } from './entity/registration-success/registration-success.component';
 import {CookieService} from "ngx-cookie-service";
+import {CartComponent} from "./entity/cart/cart.component";
+import {ProductCardServiceService} from "./services/product-card-service/product-card-service.service";
+import {CartItemComponent} from "./entity/cart-item/cart-item.component";
+import {ProductCardAuthComponent} from "./entity/product-card-auth/product-card-auth.component";
 
 registerLocaleData(localeRu, 'ru')
 
@@ -30,7 +34,8 @@ const routes = [
   {path: 'authorized/account/personal-info', component: PersonalInfoComponent},
   {path: 'authorized/account/current-orders', component: CurrentOrdersComponent},
   {path: 'authorized/account/orders-history', component: OrdersHistoryComponent},
-  {path: 'registration-success', component: RegistrationSuccessComponent}
+  {path: 'registration-success', component: RegistrationSuccessComponent},
+  {path: 'cart', component: CartComponent}
 ]
 
 @NgModule({
@@ -45,7 +50,10 @@ const routes = [
     PersonalInfoComponent,
     CurrentOrdersComponent,
     OrdersHistoryComponent,
-    RegistrationSuccessComponent
+    RegistrationSuccessComponent,
+    CartComponent,
+    CartItemComponent,
+    ProductCardAuthComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +61,7 @@ const routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [TokenServiceService, CookieService, CartServiceService],
+  providers: [TokenServiceService, CookieService, CartServiceService, ProductCardServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

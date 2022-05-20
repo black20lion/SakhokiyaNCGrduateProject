@@ -7,8 +7,9 @@ import {Token} from "../../domain/token";
 import {Category} from "../../domain/category";
 import {UserInfo} from "../../domain/userInfo";
 import {TokenServiceService} from "../../services/token-service/token-service.service";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {Advanceduserinfo} from "../../domain/advanceduserinfo";
 
 export interface Icon {
   width: number
@@ -35,7 +36,7 @@ export interface ProductCard {
 export class AuthorizedPageComponent implements OnInit {
 
 
-
+  advancedUserInfo!: Advanceduserinfo;
   maleCategory!: Category[];
   femaleCategory!: Category[];
   products: Product[] = [];
@@ -71,6 +72,19 @@ export class AuthorizedPageComponent implements OnInit {
       this.offers = result;
     });
 
+    let options = {
+      headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
+      params: new HttpParams().set('email', "" + TokenServiceService.email)
+    };
+
+    this.email = TokenServiceService.email;
+
+    this.http
+      .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
+      .subscribe(result => {
+        this.advancedUserInfo = result;
+        TokenServiceService.customerId = this.advancedUserInfo.customerId;
+      });
   }
 
   ngOnInit() {

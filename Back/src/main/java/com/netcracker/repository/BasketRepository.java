@@ -42,6 +42,15 @@ public interface BasketRepository extends JpaRepository<BasketItem, Integer> {
             "COMMIT; ", nativeQuery = true)
     void addItemIntoBasket(@Param("customerId") Long customerId, @Param("offerId") Long offerId, @Param("quantity") Long quantity);
 
+    @Modifying
+    @Transactional
+    @Query(value =
+            "delete from basket_item  " +
+            "where customer_id = :customerId and offer_id = :offerId ", nativeQuery = true)
+    void removeItemFromBasket(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
+
     @Query(value = "select count (*) from basket_item where customer_id = :customerId", nativeQuery = true)
     List<BigDecimal> getCountOfBasketItems(@Param("customerId") Long customerId);
+
+
 }

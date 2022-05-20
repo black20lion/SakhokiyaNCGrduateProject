@@ -1,5 +1,19 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 
+
+html {
+  body {
+    margin: 0;
+
+    &.scrollHidden {
+      overflow: hidden;
+    }
+
+    &.scrollShowed {
+    }
+  }
+}
+
 .social {
   float: left;
   top: 31.5vw;
@@ -102,15 +116,6 @@
   margin: 0 auto;
 }
 
-body {
-  &.scrollHidden {
-    overflow: hidden;
-  }
-
-  &.scrollShowed {
-
-  }
-}
 
 a#logout {
   font-weight: bold;
@@ -130,10 +135,10 @@ a#logout:hover {
   color: darkgoldenrod;
 }
 
-h1#personnel {
+h1#cartTitle {
   font-size: 2vw;
   position: relative;
-  top: 13vw;
+  top: 0vw;
   left: 13.5vw;
   width: 20vw;
   z-index: -100;
@@ -224,8 +229,8 @@ table#personnelNavigation {
 }
 
 span#topNavigation {
-  position: relative;
-  top: 10vw;
+  position: absolute;
+  top: 48.5vw;
   left:51.5vw;
 
   a{
@@ -587,8 +592,7 @@ div#bestOffers {
 
 footer {
   font-size: 1.2vw;
-  position: absolute;
-  top: 74vw;
+  position: static;
   left: 0vw;
   height: 49vw;
   width: 100vw;
@@ -930,8 +934,23 @@ footer {
   display: block;
 }
 
-div#centralAccountBloack {
-  position: absolute;
+div#centralCartBlock {
+  margin-top: 48.5vw;
+  position: static;
   top: 35vw;
+}
+
+img#disobedientCart {
+  position: absolute;
+  top: 6vw;
+  left: 83.4vw;
+  opacity: 0.5;
+  bottom: 0.0vw;
+  width: 1.45vw;
+  height: 1.5vw;
+}
+
+img#disobedientCart:hover {
+  opacity: 1;
 }
 

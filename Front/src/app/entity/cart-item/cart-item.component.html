@@ -1,0 +1,33 @@
+<div id="cartItem">
+
+    <img align="top" src='{{productCard.imageUrl}}' alt='{{productCard.productName}}'>
+
+
+  <a id="productName">
+    {{productCard.productName}}
+  </a>
+
+
+    <a id="priceOverride" style="color: red; font-size: 1.5vw; font-weight: bold" *ngIf="productCard.priceOverride != undefined">
+      {{productCard.priceOverride}} руб.
+    </a>
+
+    <a id="price" [ngClass]="{
+basic: (productCard.priceOverride == undefined),
+crossedOut: (productCard.priceOverride != undefined)}">
+    {{productCard.price}} руб.
+  </a>
+
+
+
+<a id="number">
+  {{inCart}}
+</a>
+
+  <a id="total">
+    {{total}}
+  </a>
+
+
+</div>
+

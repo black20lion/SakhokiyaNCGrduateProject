@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +35,13 @@ public class BasketController {
         return ResponseEntity.ok().body(message);
     }
 
-    @DeleteMapping("/baskets/item/{id}")
-    public ResponseEntity<String> removeItem(@PathVariable(value = "id") Long id)
-            throws ResourceNotFoundException {
-        basketService.deleteByItemId(id);
-        String message = "Item has been removed";
-        return ResponseEntity.ok().body(message);
-    }
+//    @DeleteMapping("/baskets/item/{id}")
+//    public ResponseEntity<String> removeItem(@PathVariable(value = "id") Long id)
+//            throws ResourceNotFoundException {
+//        basketService.deleteByItemId(id);
+//        String message = "Item has been removed";
+//        return ResponseEntity.ok().body(message);
+//    }
 
 
     @GetMapping("/baskets/short/{id}")
@@ -50,6 +51,7 @@ public class BasketController {
         return ResponseEntity.ok().body(basketInformation);
     }
 
+    @RolesAllowed("user")
     @PostMapping("/baskets/add")
     public ResponseEntity<String> addItem(@RequestParam(value = "customer_id") Long customer_id,
                                                     @RequestParam(value = "offer_id") Long offer_id,
@@ -60,5 +62,14 @@ public class BasketController {
         return ResponseEntity.ok().body(message);
     }
 
+    @RolesAllowed("user")
+    @PostMapping("/baskets/remove")
+    public ResponseEntity<String> removeItem(@RequestParam(value = "customer_id") Long customer_id,
+                                          @RequestParam(value = "offer_id") Long offer_id)
+            throws ResourceNotFoundException {
+        basketService.removeItemFromBasket(customer_id, offer_id);
+        String message = "Item successfully removed";
+        return ResponseEntity.ok().body(message);
+    }
 
 }

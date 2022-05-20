@@ -465,6 +465,7 @@ div#bestOffers {
   }
 
   button#registration {
+    font-size: 0.7vw;
     width: 8vw;
     height: 3vw;
   }
@@ -511,10 +512,12 @@ div#bestOffers {
   }
 
   input {
+    font-size: 80%;
     padding-left: 1vw;
     padding-right: 1vw;
     position: relative;
     top: -2.5vw;
+    left: -1vw;
     border-radius: 3px;
     outline: none;
     border: solid 1px lightgrey;
@@ -760,4 +763,17 @@ footer {
     top: 8.9vw;
     left: -8.0vw;
   }
+}
+
+img#disobedientCart {
+  position: relative;
+  left: 7.4vw;
+  opacity: 0.5;
+  bottom: 0.0vw;
+  width: 1.45vw;
+  height: 1.5vw;
+}
+
+img#disobedientCart:hover {
+  opacity: 1;
 }

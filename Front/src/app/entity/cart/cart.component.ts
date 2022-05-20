@@ -1,26 +1,48 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Advanceduserinfo} from "../../domain/advanceduserinfo";
-import {TokenServiceService} from "../../services/token-service/token-service.service";
+import {Router} from "@angular/router";
 import {Category} from "../../domain/category";
 import {Product} from "../../domain/product";
 import {Offer} from "../../domain/offer";
+import {TokenServiceService} from "../../services/token-service/token-service.service";
 import {UserInfo} from "../../domain/userInfo";
 import {Token} from "../../domain/token";
-import {Router} from "@angular/router";
-import {Icon, ProductCard} from "../authorized-page/authorized-page.component";
+import {Icon} from "../main-page/main-page.component";
+import {ProductCard} from "../main-page/main-page.component";
+import {ProductCardServiceService} from "../../services/product-card-service/product-card-service.service";
+import {CartServiceService} from "../../services/cart-service/cart-service.service";
+import {CartItemComponent} from "../cart-item/cart-item.component";
+
+export interface supportCartItem {
+  productCard: ProductCard
+  count: number
+}
 
 @Component({
-  selector: 'app-personal-account',
-  templateUrl: './personal-account.component.html',
-  styleUrls: ['./personal-account.component.scss']
+  selector: 'app-cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.scss']
 })
-export class PersonalAccountComponent implements OnInit {
+export class CartComponent implements OnInit {
+  cartProductCards = new Map<ProductCard, number>();
+  supportCartItems: supportCartItem[] = [];
 
-  advancedUserInfo!: Advanceduserinfo;
-  methodHasBeenCalled: boolean = false;
-  ready: boolean = false;
+  maleCategory!: Category[];
+  femaleCategory!: Category[];
+  products: Product[] = [];
+  offers: Offer[] = [];
+  userInfo!: UserInfo;
+
+  token!: Token;
+  password!: string;
+  login!: string;
   email!: string;
+  error: any;
+
+  maleMenuShow: boolean = false;
+  femaleMenuShow: boolean = false;
+  modalWindowOpen: boolean = false;
+
 
   constructor(private http: HttpClient, private router: Router) {
 
@@ -42,67 +64,22 @@ export class PersonalAccountComponent implements OnInit {
 
   }
 
-  showCustomerInfo(): void {
-    if (!this.methodHasBeenCalled) {
-      let options = {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
-        params: new HttpParams().set('email', "" + TokenServiceService.email)
-      };
+  ngOnInit() {
 
-      this.email = TokenServiceService.email;
-
-      this.http
-        .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
-        .subscribe(result => {
-          this.advancedUserInfo = result;
-          TokenServiceService.customerId = this.advancedUserInfo.customerId;
-        });
-      this.methodHasBeenCalled = true;
-    }
-  }
-
-  ngOnInit(): void {
   }
 
   ngDoCheck() {
     let x = 0;
-    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined)) {
+    if ((this.offers.length != 0 && this.products.length != 0)) {
       x++;
     }
     if (x === 1) {
-      this.showCustomerInfo()
-    }
-    if (this.advancedUserInfo != undefined) {
-      setTimeout(() => {
-        this.ready =true;
-      }, 0);
+      this.fillProductCards()
     }
 
-    if (TokenServiceService.isAuthorized === false) {
-      this.router.navigate(['..']);
+    if (CartServiceService.cartWasChanged && CartServiceService.cart.size > 0) {
+      this.fillCartProductCards();
     }
-  }
-
-  maleCategory!: Category[];
-  femaleCategory!: Category[];
-  products: Product[] = [];
-  offers: Offer[] = [];
-  userInfo!: UserInfo;
-
-  token!: Token;
-  password!: string;
-  login!: string;
-  error: any;
-
-  maleMenuShow: boolean = false;
-  femaleMenuShow: boolean = false;
-  modalWindowOpen: boolean = false;
-
-
-  logOut() {
-    TokenServiceService.email = "";
-    TokenServiceService.token = new Token();
-    TokenServiceService.isAuthorized = false;
   }
 
   showFemaleMenu() {
@@ -156,13 +133,14 @@ export class PersonalAccountComponent implements OnInit {
 
   icons: Icon[] = [
     {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
+    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'}
   ]
 
   productCards: ProductCard[] = [];
   productCardsUniqueArticle: ProductCard[] = [];
   bestOffers: ProductCard[] = [];
+  offerInCart: ProductCard[] = [];
+  countInCart: number[] = [];
   currentProductCard!
     :
     ProductCard;
@@ -198,12 +176,15 @@ export class PersonalAccountComponent implements OnInit {
         }
       }
 
+      ProductCardServiceService.productCards = this.productCards;
+
       this.bestOffers.push(this.productCardsUniqueArticle[0]);
       this.bestOffers.push(this.productCardsUniqueArticle[1]);
       this.bestOffers.push(this.productCardsUniqueArticle[2]);
       this.bestOffers.push(this.productCardsUniqueArticle[3]);
       this.bestOffers.push(this.productCardsUniqueArticle[4]);
       this.productCardsFilled = true
+      console.log(this.productCards)
     }
   }
 
@@ -234,11 +215,13 @@ export class PersonalAccountComponent implements OnInit {
         this.error = error.message
         console.log(error)
       }, () => {
-        this.getUserInfo()
+        console.log(this.token.access_token);
+        TokenServiceService.loadRefreshTokenTimer();
+        this.getUserInfo();
       });
   }
 
-  getUserInfo():void {
+  getUserInfo(): void {
     if (this.token != undefined) {
       let options = {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token.access_token.toString())
@@ -255,7 +238,38 @@ export class PersonalAccountComponent implements OnInit {
         }, () => {
           TokenServiceService.token = this.token;
           TokenServiceService.email = this.email;
+          TokenServiceService.isAuthorized = true;
+          this.router.navigate(['../authorized'])
         });
     }
   }
+
+  fillCartProductCards(): void {
+    for (let currentProductInCart of CartServiceService.cart) {
+      for (let currentProductCard of this.productCards) {
+        if (currentProductCard.offerId === currentProductInCart[0]) {
+          this.cartProductCards.set(currentProductCard, currentProductInCart[1]);
+
+          if (!this.offerInCart.includes(currentProductCard)) {
+            this.offerInCart.push(currentProductCard);
+          }
+        }
+      }
+    }
+    this.supportCartItems = [];
+    for (let currentCardInCart of this.cartProductCards) {
+      this.countInCart.push(currentCardInCart[1]);
+    }
+
+    console.log(this.cartProductCards.size)
+
+    let counter = 0;
+    for (let currentCardInCart of this.cartProductCards) {
+      this.supportCartItems.push({productCard: currentCardInCart[0], count: this.countInCart[counter]}
+      )
+      counter++;
+    }
+  }
 }
+
+

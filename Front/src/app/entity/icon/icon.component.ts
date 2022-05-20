@@ -13,7 +13,7 @@ export class IconComponent implements OnInit {
 
   opacity: number = 0.5
 
-  hrefs: string[] =["#zatemnenie", "#zatemnenie", "#zatemnenie"]
+  hrefs: string[] =["#zatemnenie", "#zatemnenie"]
 
   ngOnInit(): void {
   }

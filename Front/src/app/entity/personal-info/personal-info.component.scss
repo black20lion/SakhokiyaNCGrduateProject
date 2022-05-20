@@ -599,7 +599,7 @@ div#bestOffers {
 footer {
   font-size: 1.2vw;
   position: absolute;
-  top: 42vw;
+  top: 74vw;
   left: 0vw;
   height: 49vw;
   width: 100vw;
@@ -941,4 +941,7 @@ footer {
   display: block;
 }
 
-
+div#centralBlock {
+  position: absolute;
+  top: 35vw;
+}

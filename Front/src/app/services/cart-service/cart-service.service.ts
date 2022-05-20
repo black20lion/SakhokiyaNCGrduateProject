@@ -9,4 +9,6 @@ export class CartServiceService {
 
   public static cart = new Map<bigint, number>();
 
+  public static cartWasChanged: boolean = false;
+
 }

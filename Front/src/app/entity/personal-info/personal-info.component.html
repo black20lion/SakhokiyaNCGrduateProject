@@ -55,9 +55,11 @@
     </ul>
   </div>
   <body>
-  <h1 id="personnel">Персональные данные</h1>
 
-  <span id="topNavigation">
+  <div id="centralBlock">
+    <h1 id="personnel">Персональные данные</h1>
+
+    <span id="topNavigation">
     <a id="toMainPage" routerLink="../..">Главная</a>
     <a id="dash"> — </a>
     <a id="toPersonnel" routerLink="..">Личный кабинет</a>
@@ -65,50 +67,51 @@
     <a id="toInfoItems" routerLink=".">Персональные данные</a>
   </span>
 
-  <table id="personnelNavigation" border="1">
-    <tr>
-      <td>Личный кабинет</td>
-    </tr>
-    <tr>
-      <td>Персональные данныe</td>
-    </tr>
-    <tr>
-      <td>Текущие заказы</td>
-    </tr>
-    <tr>
-      <td>История заказов</td>
-    </tr>
-  </table>
+    <table id="personnelNavigation" border="1">
+      <tr>
+        <td>Личный кабинет</td>
+      </tr>
+      <tr>
+        <td>Персональные данныe</td>
+      </tr>
+      <tr>
+        <td>Текущие заказы</td>
+      </tr>
+      <tr>
+        <td>История заказов</td>
+      </tr>
+    </table>
 
-<div id="infoItems">
-  <p *ngIf="ready">
-    Имя: {{advancedUserInfo.firstName}}
-  </p>
+    <div id="infoItems">
+      <p *ngIf="ready">
+        Имя: {{advancedUserInfo.firstName}}
+      </p>
 
-  <p *ngIf="ready">
-    Фамилия: {{advancedUserInfo.lastName}}
-  </p>
+      <p *ngIf="ready">
+        Фамилия: {{advancedUserInfo.lastName}}
+      </p>
 
-  <p *ngIf="ready">
-    Логин: {{email}}
-  </p>
+      <p *ngIf="ready">
+        Логин: {{email}}
+      </p>
 
-  <p *ngIf="ready">
-    Телефон: {{advancedUserInfo.phoneNumber}}
-  </p>
+      <p *ngIf="ready">
+        Телефон: {{advancedUserInfo.phoneNumber}}
+      </p>
 
-  <p *ngIf="ready">
-    Адрес доставки: {{advancedUserInfo.lastDeliveryAddress}}
-  </p>
+      <p *ngIf="ready">
+        Адрес доставки: {{advancedUserInfo.lastDeliveryAddress}}
+      </p>
 
-  <p *ngIf="ready">
-    Пол: {{advancedUserInfo.gender}}
-  </p>
+      <p *ngIf="ready">
+        Пол: {{advancedUserInfo.gender}}
+      </p>
 
-  <p *ngIf="ready">
-    Дата рождения: {{advancedUserInfo.birthDate}}
-  </p>
-</div>
+      <p *ngIf="ready">
+        Дата рождения: {{advancedUserInfo.birthDate}}
+      </p>
+    </div>
+  </div>
 
   <footer style="color: white">
     <div id="footerAbout">

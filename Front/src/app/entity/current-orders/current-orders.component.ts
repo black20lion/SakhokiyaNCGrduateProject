@@ -44,7 +44,7 @@ export class CurrentOrdersComponent implements OnInit {
 
     let optionsCurrent = {
       headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
-      params: new HttpParams().set('customer', "" + TokenServiceService.customerId).set('not_completed', "false")
+      params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('not_completed', "true")
     }
     this.http.get<Order[]>('http://localhost:8081/rest/orders/params', optionsCurrent).subscribe(result => {
       this.orders = result;

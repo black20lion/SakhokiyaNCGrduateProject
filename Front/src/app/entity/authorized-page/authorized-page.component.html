@@ -78,11 +78,11 @@
   <div id="bestOffers">
     <h1>Лучшие предложения</h1>
     <div id="boCards">
-      <app-product-card
+      <app-product-card-auth
         *ngFor="let iterProductCard of bestOffers; let idx = index"
         [productCard]="iterProductCard"
         [index]="idx+1">
-      </app-product-card>
+      </app-product-card-auth>
     </div>
   </div>
 

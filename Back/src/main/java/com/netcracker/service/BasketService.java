@@ -33,4 +33,8 @@ public class BasketService {
     public void deleteByItemId(Long id) {
         repository.deleteById(id);
     }
+
+    public void removeItemFromBasket (Long customer_id, Long offer_id) {
+        repository.removeItemFromBasket(customer_id, offer_id);
+    }
 }

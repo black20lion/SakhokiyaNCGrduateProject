@@ -8,6 +8,7 @@ import {Category} from "../../domain/category";
 import {UserInfo} from "../../domain/userInfo";
 import {TokenServiceService} from "../../services/token-service/token-service.service";
 import {Router} from "@angular/router";
+import {ProductCardServiceService} from "../../services/product-card-service/product-card-service.service";
 
 export interface Icon {
   width: number
@@ -139,7 +140,7 @@ export class MainPageComponent implements OnInit, DoCheck {
   icons: Icon[] = [
     {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
     {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
+    // {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
   ]
 
   productCards: ProductCard[] = [];
@@ -179,6 +180,8 @@ export class MainPageComponent implements OnInit, DoCheck {
           articleList.push(this.productCardsUniqueArticle[i].article)
         }
       }
+
+      ProductCardServiceService.productCards = this.productCards;
 
       this.bestOffers.push(this.productCardsUniqueArticle[0]);
       this.bestOffers.push(this.productCardsUniqueArticle[1]);

@@ -3,16 +3,17 @@ import {ProductCard} from "../main-page/main-page.component";
 import {CartServiceService} from "../../services/cart-service/cart-service.service";
 
 @Component({
-  selector: 'app-product-card',
-  templateUrl: './product-card.component.html',
-  styleUrls: ['./product-card.component.scss']
+  selector: 'app-cart-item',
+  templateUrl: './cart-item.component.html',
+  styleUrls: ['./cart-item.component.scss']
 })
-export class ProductCardComponent implements OnInit {
+export class CartItemComponent implements OnInit {
 
-  @Input() productCard!: ProductCard
-  @Input() index!: number
-  inCart: number = 0
-
+  @Input() productCard!: ProductCard;
+  @Input() count!: number;
+  @Input() index!: number;
+  inCart: number = 0;
+  total!: number;
 
   ngOnInit(): void {
   }
@@ -44,6 +45,7 @@ export class ProductCardComponent implements OnInit {
 
   checkInCart(): void {
     let isFound = false;
+
     for (let currentProductInCart of CartServiceService.cart) {
       if (currentProductInCart[0] === this.productCard.offerId) {
         this.inCart = currentProductInCart[1];
@@ -51,8 +53,17 @@ export class ProductCardComponent implements OnInit {
         break;
       }
     }
+
     if (!isFound) {
       this.inCart = 0;
+      this.total = 0;
+    } else {
+      if (this.productCard.priceOverride == null) {
+        this.total = this.inCart * this.productCard.price;
+      } else {
+        this.total = this.inCart * this.productCard.priceOverride;
+      }
     }
   }
+
 }
