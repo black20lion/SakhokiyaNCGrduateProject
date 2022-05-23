@@ -22,19 +22,27 @@ public class BasketService {
         return repository.findAllByCustomerIdShort(id);
     }
 
-    public void addItemIntoBasket(Long customer_id, Long offer_id, Long quantity) {
-        repository.addItemIntoBasket(customer_id, offer_id, quantity);
+    public void addItemIntoBasket(Long customer_id, Long offer_id) {
+        repository.addItemIntoBasket(customer_id, offer_id);
     }
 
     public void deleteAllByCustomerId(Long id) {
         repository.deleteAllByCustomerId(id);
     }
 
-    public void deleteByItemId(Long id) {
-        repository.deleteById(id);
-    }
 
     public void removeItemFromBasket (Long customer_id, Long offer_id) {
-        repository.removeItemFromBasket(customer_id, offer_id);
+        List<Boolean> myBool = repository.checkIfLessThanTwo(customer_id, offer_id);
+        if (!(myBool.get(0) == null)) {
+            if (myBool.get(0)) {
+                repository.startTransaction();
+                repository.removeItemFromBasket(customer_id, offer_id);
+                repository.endTransaction();
+            } else {
+                repository.startTransaction();
+                repository.decrementNumberOfItems(customer_id, offer_id);
+                repository.endTransaction();
+            }
+        }
     }
 }

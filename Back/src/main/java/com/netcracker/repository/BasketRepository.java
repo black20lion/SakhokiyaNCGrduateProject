@@ -38,19 +38,50 @@ public interface BasketRepository extends JpaRepository<BasketItem, Integer> {
     @Query(value = "BEGIN; " +
             "insert into basket_item (customer_id, offer_id, quantity) " +
             "values (" +
-            ":customerId, :offerId, :quantity); " +
+            ":customerId, :offerId, 1) " +
+            "on conflict (offer_id) do update " +
+            "set quantity = basket_item.quantity+1 ; " +
             "COMMIT; ", nativeQuery = true)
-    void addItemIntoBasket(@Param("customerId") Long customerId, @Param("offerId") Long offerId, @Param("quantity") Long quantity);
+    void addItemIntoBasket(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
+
 
     @Modifying
     @Transactional
     @Query(value =
             "delete from basket_item  " +
-            "where customer_id = :customerId and offer_id = :offerId ", nativeQuery = true)
+            "where customer_id = :customerId and offer_id = :offerId " +
+                    " ", nativeQuery = true)
     void removeItemFromBasket(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
+
+    @Modifying
+    @Transactional
+    @Query(value =
+            "UPDATE basket_item SET quantity = basket_item.quantity-1  " +
+                    "where customer_id = :customerId and offer_id = :offerId ; " +
+                    "  ", nativeQuery = true)
+    void decrementNumberOfItems(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
+
+
+    @Transactional
+    @Query(value = " \n" +
+            " SELECT (( SELECT quantity FROM basket_item " +
+            " where customer_id = :customerId and offer_id = :offerId) < 2) ", nativeQuery = true)
+    List<Boolean> checkIfLessThanTwo(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
+
+
+
 
     @Query(value = "select count (*) from basket_item where customer_id = :customerId", nativeQuery = true)
     List<BigDecimal> getCountOfBasketItems(@Param("customerId") Long customerId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "BEGIN ; ", nativeQuery = true)
+    void startTransaction();
+
+    @Modifying
+    @Transactional
+    @Query(value = "COMMIT ; ", nativeQuery = true)
+    void endTransaction();
 
 }

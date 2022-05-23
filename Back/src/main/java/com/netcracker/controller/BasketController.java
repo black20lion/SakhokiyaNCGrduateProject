@@ -35,14 +35,6 @@ public class BasketController {
         return ResponseEntity.ok().body(message);
     }
 
-//    @DeleteMapping("/baskets/item/{id}")
-//    public ResponseEntity<String> removeItem(@PathVariable(value = "id") Long id)
-//            throws ResourceNotFoundException {
-//        basketService.deleteByItemId(id);
-//        String message = "Item has been removed";
-//        return ResponseEntity.ok().body(message);
-//    }
-
 
     @GetMapping("/baskets/short/{id}")
     public ResponseEntity<Map<BigDecimal, BigDecimal>> getBasketInformation(@PathVariable(value = "id") Long id)
@@ -54,10 +46,9 @@ public class BasketController {
     @RolesAllowed("user")
     @PostMapping("/baskets/add")
     public ResponseEntity<String> addItem(@RequestParam(value = "customer_id") Long customer_id,
-                                                    @RequestParam(value = "offer_id") Long offer_id,
-                                                    @RequestParam(value = "quantity") Long quantity)
+                                                    @RequestParam(value = "offer_id") Long offer_id)
             throws ResourceNotFoundException {
-        basketService.addItemIntoBasket(customer_id, offer_id, quantity);
+        basketService.addItemIntoBasket(customer_id, offer_id);
         String message = "Item successfully added";
         return ResponseEntity.ok().body(message);
     }
