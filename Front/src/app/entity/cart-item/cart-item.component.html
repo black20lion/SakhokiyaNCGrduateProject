@@ -1,32 +1,28 @@
 <div id="cartItem">
 
-    <img align="top" src='{{productCard.imageUrl}}' alt='{{productCard.productName}}'>
+  <table id="myTable" style="width: 75vw;">
+    <tr valign="top"><td style="max-width: 10vw; width: 10vw; font-size: 1.5vw"><img align="top" src='{{productCard.imageUrl}}' alt='{{productCard.productName}}'></td>
+      <td style="max-width: 20vw; width: 20vw; font-size: 1.5vw"><a id="productName1">
+      {{productCard.productName}}</a></td>
 
-
-  <a id="productName">
-    {{productCard.productName}}
-  </a>
-
-
-    <a id="priceOverride" style="color: red; font-size: 1.5vw; font-weight: bold" *ngIf="productCard.priceOverride != undefined">
-      {{productCard.priceOverride}} руб.
-    </a>
-
-    <a id="price" [ngClass]="{
+      <td style="max-width: 15vw; width: 15vw"><a id="priceOverride1" style="color: red; font-size: 1.5vw; font-weight: bold" *ngIf="productCard.priceOverride != undefined">
+      {{productCard.priceOverride}} ₽</a>
+      <a id="price" [ngClass]="{
 basic: (productCard.priceOverride == undefined),
 crossedOut: (productCard.priceOverride != undefined)}">
-    {{productCard.price}} руб.
-  </a>
+      {{productCard.price}} ₽</a></td>
+      <td align="center" style="max-width: 10vw; width: 10vw;font-size: 1.5vw"><a id="number1">
+      {{inCart}}</a>
+      </td>
 
+      <td align="right" style="max-width: 6vw;width: 6vw;font-size: 1.5vw">
+        <a id="total1">
+      {{total}} ₽</a>
+      </td></tr>
 
+  </table>
 
-<a id="number">
-  {{inCart}}
-</a>
-
-  <a id="total">
-    {{total}}
-  </a>
+<hr color="whitesmoke" align="left" id="closingLine">
 
 
 </div>

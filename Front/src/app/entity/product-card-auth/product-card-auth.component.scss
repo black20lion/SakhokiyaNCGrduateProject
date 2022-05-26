@@ -38,7 +38,8 @@ a#plus {
 a#minus {
   &.inactive {
     button {
-      cursor: unset;
+      cursor: not-allowed;
+      pointer-events: none;
       background-color: whitesmoke;
       box-shadow: none;
     }

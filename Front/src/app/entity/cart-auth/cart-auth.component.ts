@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import {Icon, ProductCard} from "../main-page/main-page.component";
 import {Category} from "../../domain/category";
 import {Product} from "../../domain/product";
 import {Offer} from "../../domain/offer";
-import {TokenServiceService} from "../../services/token-service/token-service.service";
 import {UserInfo} from "../../domain/userInfo";
 import {Token} from "../../domain/token";
-import {Icon} from "../main-page/main-page.component";
-import {ProductCard} from "../main-page/main-page.component";
-import {ProductCardServiceService} from "../../services/product-card-service/product-card-service.service";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
 import {CartServiceService} from "../../services/cart-service/cart-service.service";
+import {ProductCardServiceService} from "../../services/product-card-service/product-card-service.service";
+import {TokenServiceService} from "../../services/token-service/token-service.service";
+
 
 export interface supportCartItem {
   productCard: ProductCard
@@ -18,11 +18,12 @@ export interface supportCartItem {
 }
 
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  selector: 'app-cart-auth',
+  templateUrl: './cart-auth.component.html',
+  styleUrls: ['./cart-auth.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartAuthComponent implements OnInit {
+
   cartProductCards = new Map<ProductCard, number>();
   supportCartItems: supportCartItem[] = [];
 
@@ -38,6 +39,7 @@ export class CartComponent implements OnInit {
   email!: string;
   error: any;
   isEmpty!: boolean;
+  total: number = 0;
 
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
@@ -69,6 +71,7 @@ export class CartComponent implements OnInit {
   }
 
   ngDoCheck() {
+
     let x = 0;
     if ((this.offers.length != 0 && this.products.length != 0)) {
       x++;
@@ -86,6 +89,8 @@ export class CartComponent implements OnInit {
     } else {
       this.isEmpty = true;
     }
+
+    this.countTotal();
   }
 
   showFemaleMenu() {
@@ -138,8 +143,7 @@ export class CartComponent implements OnInit {
   }
 
   icons: Icon[] = [
-    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'}
+    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'}
   ]
 
   productCards: ProductCard[] = [];
@@ -263,6 +267,7 @@ export class CartComponent implements OnInit {
       }
     }
     this.supportCartItems = [];
+
     for (let currentCardInCart of this.cartProductCards) {
       this.countInCart.push(currentCardInCart[1]);
     }
@@ -276,6 +281,18 @@ export class CartComponent implements OnInit {
       counter++;
     }
   }
+
+  countTotal(): void {
+    this.total = 0;
+    for (let currentItem of this.supportCartItems) {
+      let realPrice
+
+      if (currentItem.productCard.priceOverride == null) {
+        realPrice = currentItem.productCard.price
+      } else {
+        realPrice = currentItem.productCard.priceOverride
+      }
+      this.total += realPrice * currentItem.count;
+    }
+  }
 }
-
-

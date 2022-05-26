@@ -1,7 +1,23 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+
+
+html {
+  body {
+    margin: 0;
+
+    &.scrollHidden {
+      overflow: hidden;
+    }
+
+    &.scrollShowed {
+    }
+  }
+}
+
 .social {
   float: left;
   top: 31.5vw;
+
   a {
     text-align: center;
     vertical-align: center;
@@ -25,6 +41,7 @@
 .vk {
   position: relative;
   left: 1vw;
+
   a {
     padding-bottom: 0.2vw;
   }
@@ -33,6 +50,7 @@
 .instagram {
   position: relative;
   left: 2vw;
+
   a {
     padding-right: 0.4vw;
     padding-top: 0.65vw;
@@ -43,6 +61,7 @@
 .telegram {
   position: relative;
   left: 3vw;
+
   a {
     font-size: 0.9vw;
     padding-right: 0.50vw;
@@ -55,6 +74,7 @@
 .whatsapp {
   position: relative;
   left: 4vw;
+
   a {
     font-size: 1.1vw;
     padding-top: 0.600vw;
@@ -67,19 +87,22 @@
 .instagram a:hover {
   border-color: #333333;
   background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
-  color: #fff;}
+  background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+  color: #fff;
+}
 
 .vk a:hover {
   border-color: #333333;
   background: #5d84ae;
-  color: #fff;}
+  color: #fff;
+}
 
 .telegram a:hover {
   border-color: #333333;
-  background: #249bd7; color: #fff;
+  background: #249bd7;
+  color: #fff;
 }
 
 .whatsapp a:hover {
@@ -92,14 +115,7 @@
 .container {
   margin: 0 auto;
 }
-body {
-  &.scrollHidden {
-    overflow: hidden;
-  }
-  &.scrollShowed {
 
-  }
-}
 
 a#logout {
   font-weight: bold;
@@ -112,10 +128,136 @@ a#logout {
   width: 9vw;
   height: 1vw;
 }
+
 a#logout:hover {
   cursor: pointer;
   opacity: 1;
   color: darkgoldenrod;
+}
+
+h1#cartTitle {
+  font-size: 2vw;
+  position: relative;
+  top: 0vw;
+  left: 13.5vw;
+  width: 20vw;
+  z-index: -100;
+}
+
+img#infoPersonnel {
+  position: relative;
+  top: 1vw;
+  left: 35vw;
+  width: 10vw;
+  opacity: 0.5;
+}
+
+a#infoPersonnelLabel {
+  text-decoration: none;
+  color: black;
+  position: relative;
+  top: 3.5vw;
+  left: 2.3vw;
+  font-size: 1.5vw;
+}
+
+img#infoPersonnel:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+
+img#currentOrders {
+  position: relative;
+  top: 1vw;
+  left: 45vw;
+  width: 10vw;
+  opacity: 0.5;
+}
+
+img#currentOrders:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+a#currentOrdersLabel {
+  text-decoration: none;
+  color: black;
+  position: relative;
+  top: 3.5vw;
+  left: 8.2vw;
+  font-size: 1.5vw;
+}
+
+img#completedOrders {
+  position: relative;
+  top: 1vw;
+  left: 55vw;
+  width: 10vw;
+  opacity: 0.5;
+}
+
+img#completedOrders:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+a#completedOrdersLabel {
+  text-decoration: none;
+  color: black;
+  position: relative;
+  top: 3.5vw;
+  left: 16.1vw;
+  font-size: 1.5vw;
+}
+
+table#personnelNavigation {
+  z-index: -100;
+  position: relative;
+  top: 13.5vw;
+  left: 13.35vw;
+  line-height: 2vw;
+  border-spacing: 0px;
+  border-color: grey;
+  border-style: none;
+  width: 15vw;
+  tr {
+    text-align: center;
+    width: 10vw;
+    height: 3vw;
+  }
+}
+
+span#topNavigation {
+  position: absolute;
+  top: 48.5vw;
+  left:51.5vw;
+
+  a{
+    font-size: 1.4vw;
+    text-decoration: none;
+    color: black;
+  }
+
+  a#toMainPage {
+    opacity: 0.5;
+  }
+
+  a#dash {
+    opacity: 0.5;
+  }
+
+  a#toPersonnel {
+    opacity: 0.5;
+  }
+
+  a#toMainPage:hover {
+    opacity: 1;
+  }
+
+  a#toPersonnel:hover {
+    opacity: 1;
+  }
 }
 
 button {
@@ -378,7 +520,7 @@ div#maleCategories {
 div#mainAbout {
   font-size: 0.8vw;
   position: absolute;
-  top: 80.0vw;
+  top: 42.0vw;
   left: 14.4vw;
   display: inline-block;
   color: grey;
@@ -416,7 +558,7 @@ div#mainAbout {
 div#bestOffers {
   font-size: 0.8vw;
   position: absolute;
-  top: 45.0vw;
+  top: 12.0vw;
   left: 14.4vw;
   display: inline-block;
   color: grey;
@@ -450,8 +592,7 @@ div#bestOffers {
 
 footer {
   font-size: 1.2vw;
-  position: absolute;
-  top: 120vw;
+  position: static;
   left: 0vw;
   height: 49vw;
   width: 100vw;
@@ -498,6 +639,7 @@ footer {
       a:hover {
         color: white;
       }
+
       width: 15vw;
       padding: 0.6vw;
       color: darkgray;
@@ -548,6 +690,7 @@ footer {
       a:hover {
         color: darkgray;
       }
+
       color: white;
       font-weight: bold;
       padding-bottom: 2vw;
@@ -657,7 +800,7 @@ footer {
   }
 
   img#footerPhoneIcon:hover {
-    filter:invert(100%);
+    filter: invert(100%);
   }
 
   a#footerPhone {
@@ -678,6 +821,7 @@ footer {
   display: none;
   z-index: 3000;
 }
+
 #okno {
 
   font-size: 1.5vw;
@@ -691,9 +835,10 @@ footer {
   right: 0;
   bottom: 0;
   left: 0;
-  top:0;
+  top: 0;
   margin: auto;
-  background: white; z-index: 5000;
+  background: white;
+  z-index: 5000;
 
   h1 {
     position: relative;
@@ -784,11 +929,21 @@ footer {
     left: 3.5vw;
   }
 }
-#zatemnenie:target {display: block;}
+
+#zatemnenie:target {
+  display: block;
+}
+
+div#centralCartBlock {
+  margin-top: 48.5vw;
+  position: static;
+  top: 35vw;
+}
 
 img#disobedientCart {
-  position: relative;
-  left: 7.4vw;
+  position: absolute;
+  top: 6vw;
+  left: 83.4vw;
   opacity: 0.5;
   bottom: 0.0vw;
   width: 1.45vw;
@@ -797,4 +952,52 @@ img#disobedientCart {
 
 img#disobedientCart:hover {
   opacity: 1;
+}
+
+img#disobedientPersonnel {
+  position: absolute;
+  top: 6vw;
+  left: 79.7vw;
+  opacity: 0.5;
+  bottom: 0.0vw;
+  width: 1.45vw;
+  height: 1.5vw;
+}
+
+img#disobedientPersonnel:hover {
+  opacity: 1;
+}
+
+a#sadEmpty {
+  position: relative;
+  left: 35vw;
+  font-size: 2vw;
+  margin-bottom: 3vw;
+}
+
+table#hatTable {
+  font-size: 1.5vw;
+  position: relative;
+  left: 13.5vw;
+  color: grey;
+}
+
+div#completeTotal {
+  font-size: 2vw;
+  position: relative;
+  left: 74vw;
+  margin-bottom: 2vw;
+}
+
+div#confirmOrder {
+  button {
+    font-size: 1.5vw;
+    height: 4vw;
+  }
+  button:hover {
+    color: darkgoldenrod;
+  }
+  position: relative;
+  left: 74vw;
+  margin-bottom: 2vw;
 }

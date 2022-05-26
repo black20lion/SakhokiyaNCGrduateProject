@@ -5,11 +5,11 @@
       <span id="city">г. Нижний Новгород </span>
       <span id="phone">8(999)120-8858</span>
       <span id="menuIcons">
-      <app-icon
+      <app-icon-authorized
         *ngFor="let iterIcon of icons; let idx = index"
         [icon]="iterIcon"
         [index]="idx+1">
-      </app-icon>
+      </app-icon-authorized>
       </span>
     </div>
 
@@ -87,6 +87,14 @@
       [index]="idx+1">
     </app-cart-item>
 
+    <div *ngIf="!isEmpty" id="completeTotal"><a>Итого: {{total}} руб.</a></div>
+
+    <div *ngIf="!isEmpty" id="confirmOrder"><a><button>Оформить заказ</button></a></div>
+
+    <a routerLink="../account">
+      <img id="disobedientPersonnel" width="30" height="30" src="assets/img/icons/user.png" alt="Корзина">
+    </a>
+
     <a routerLink=".">
       <img id="disobedientCart" width="30" height="30" src="assets/img/icons/cart.png" alt="Корзина">
     </a>
@@ -157,4 +165,5 @@
   </footer>
   </body>
 </div>
+
 

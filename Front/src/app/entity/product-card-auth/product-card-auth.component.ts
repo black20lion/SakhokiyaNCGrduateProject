@@ -26,17 +26,16 @@ export class ProductCardAuthComponent implements OnInit {
   }
 
   ngDoCheck(): void {
-    this.checkInCart();
+    this.checkInCart()
   }
 
 
   add(): void {
+    CartServiceService.refreshCart(this.http)
 
-    if (this.inCart != undefined && this.inCart > 0) {
-        this.deleteCompletely();
-    } else {
+    setTimeout(() => {
+      this.checkInCart();
 
-    }
 
       ++this.inCart;
       CartServiceService.cart.set(this.productCard.offerId, this.inCart);
@@ -47,7 +46,7 @@ export class ProductCardAuthComponent implements OnInit {
       this.http
         .post<string>('http://localhost:8081/rest/baskets/add', null, {
           headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token.toString()),
-          params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('offer_id', "" + this.productCard.offerId).set('quantity', this.inCart)
+          params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('offer_id', "" + this.productCard.offerId)
         })
         .subscribe(result => {
           console.log('result')
@@ -55,33 +54,34 @@ export class ProductCardAuthComponent implements OnInit {
           this.error = error.message
           console.log(error)
         });
+    }, 1000);
     }
 
-  deleteCompletely(): void {
-    this.http
-      .post<string>('http://localhost:8081/rest/baskets/remove', null, {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token.toString()),
-        params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('offer_id', "" + this.productCard.offerId)
-      })
-      .subscribe(result => {
-        console.log('result')
-      }, (error) => {
-        this.error = error.message
-        console.log(error)
-      });
-  }
 
   delete(): void {
-    if (this.inCart != 0) {
+    CartServiceService.refreshCart(this.http)
+    setTimeout(() => {
+      this.checkInCart();
+
       --this.inCart;
-      if (this.inCart === 0) {
-        CartServiceService.cart.delete(this.productCard.offerId);
-      } else {
-        CartServiceService.cart.set(this.productCard.offerId, this.inCart);
-      }
-    }
-    CartServiceService.cartWasChanged = true;
-    CartServiceService.cart.forEach(console.log);
+      CartServiceService.cart.set(this.productCard.offerId, this.inCart);
+      CartServiceService.cartWasChanged = true;
+      CartServiceService.cart.forEach(console.log);
+
+
+      this.http
+        .post<string>('http://localhost:8081/rest/baskets/remove', null, {
+          headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token.toString()),
+          params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('offer_id', "" + this.productCard.offerId)
+        })
+        .subscribe(result => {
+          console.log('result')
+        }, (error) => {
+          this.error = error.message
+          console.log(error)
+        });
+    }, 1000);
+
   }
 
   checkInCart(): void {

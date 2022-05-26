@@ -115,8 +115,7 @@ a {
 }
 
 a#price {
-  position: relative;
-  left: 30vw;
+
   &.basic {
     font-weight: bold;
     font-size: 1.5vw;
@@ -124,6 +123,7 @@ a#price {
 
   &.crossedOut {
     color: grey;
+    font-size: 1.3vw;
     text-decoration: line-through;
   }
 }
@@ -155,3 +155,11 @@ div#cartItem {
   left: 13.5vw;
   margin-bottom: 2vw;
 }
+
+hr#closingLine {
+  position: relative;
+  left: 0.3vw;
+  width: 75vw;
+  vertical-align: center;
+}
+

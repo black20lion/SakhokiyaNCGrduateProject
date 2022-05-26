@@ -133,6 +133,7 @@ a#logout:hover {
 div#infoItems {
   position: relative;
   left: 35vw;
+  font-size: 1.5vw;
 }
 
 h1#personnel {
@@ -206,6 +207,7 @@ a#completedOrdersLabel {
 }
 
 table#personnelNavigation {
+  font-size: 1.5vw;
   z-index: -100;
   position: relative;
   top: 13.5vw;
@@ -599,7 +601,7 @@ div#bestOffers {
 footer {
   font-size: 1.2vw;
   position: absolute;
-  top: 74vw;
+  top: 85vw;
   left: 0vw;
   height: 49vw;
   width: 100vw;

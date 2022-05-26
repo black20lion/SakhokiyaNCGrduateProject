@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Token} from "../../domain/token";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {CartServiceService} from "../cart-service/cart-service.service";
 
 @Injectable({
   providedIn: 'root'

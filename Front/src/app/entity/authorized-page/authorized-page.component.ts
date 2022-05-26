@@ -10,6 +10,8 @@ import {TokenServiceService} from "../../services/token-service/token-service.se
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Advanceduserinfo} from "../../domain/advanceduserinfo";
+import {Basketitem} from "../../domain/basketitem";
+import {CartServiceService} from "../../services/cart-service/cart-service.service";
 
 export interface Icon {
   width: number
@@ -52,6 +54,7 @@ export class AuthorizedPageComponent implements OnInit {
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
   modalWindowOpen: boolean = false;
+  primarlyRefreshed: boolean = false;
 
 
   constructor(private http: HttpClient, private router: Router) {
@@ -88,10 +91,10 @@ export class AuthorizedPageComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 
   ngDoCheck() {
+
     let x = 0;
     let y = 0;
     if ((this.offers.length != 0 && this.products.length != 0)) {
@@ -103,6 +106,10 @@ export class AuthorizedPageComponent implements OnInit {
 
     if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined)) {
       y++;
+    }
+
+    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined) && (!this.primarlyRefreshed)) {
+      setTimeout(()=> this.refreshCart(), 1000);
     }
 
     if (y === 1) {
@@ -171,8 +178,7 @@ export class AuthorizedPageComponent implements OnInit {
 
   icons: Icon[] = [
     {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
+    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'}
   ]
 
   productCards: ProductCard[] = [];
@@ -272,6 +278,12 @@ export class AuthorizedPageComponent implements OnInit {
           TokenServiceService.email = this.email;
         });
     }
+  }
+
+
+  refreshCart():void {
+    CartServiceService.refreshCart(this.http);
+    this.primarlyRefreshed = true;
   }
 
 }

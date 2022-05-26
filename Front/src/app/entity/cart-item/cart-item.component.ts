@@ -31,9 +31,9 @@ export class CartItemComponent implements OnInit {
   }
 
   delete(): void {
-    if (this.inCart != 0) {
+    if (this.inCart > 0) {
       --this.inCart;
-      if (this.inCart === 0) {
+      if (this.inCart <= 0) {
         CartServiceService.cart.delete(this.productCard.offerId);
       } else {
         CartServiceService.cart.set(this.productCard.offerId, this.inCart);
@@ -65,5 +65,6 @@ export class CartItemComponent implements OnInit {
       }
     }
   }
+
 
 }

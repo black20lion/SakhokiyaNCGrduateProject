@@ -21,7 +21,7 @@ crossedOut: (productCard.priceOverride != undefined)}">
 </a>
 
   <a id="minus" [ngClass]="{
-inactive: (inCart === 0)}">
+inactive: (inCart <= 0)}">
    <button id="addToBasket2" (click)="delete()">
     –
   </button>

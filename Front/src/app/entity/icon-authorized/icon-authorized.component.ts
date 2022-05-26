@@ -13,7 +13,7 @@ export class IconAuthorizedComponent implements OnInit {
 
   opacity: number = 0.5
 
-  hrefs: string[] =["./account", './account', './account']
+  hrefs: string[] =["./account", './account']
 
   ngOnInit(): void {
   }
