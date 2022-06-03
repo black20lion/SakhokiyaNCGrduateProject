@@ -40,7 +40,6 @@ export class ProductCardAuthComponent implements OnInit {
       ++this.inCart;
       CartServiceService.cart.set(this.productCard.offerId, this.inCart);
       CartServiceService.cartWasChanged = true;
-      CartServiceService.cart.forEach(console.log);
 
 
       this.http
@@ -49,7 +48,7 @@ export class ProductCardAuthComponent implements OnInit {
           params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('offer_id', "" + this.productCard.offerId)
         })
         .subscribe(result => {
-          console.log('result')
+
         }, (error) => {
           this.error = error.message
           console.log(error)
@@ -66,7 +65,6 @@ export class ProductCardAuthComponent implements OnInit {
       --this.inCart;
       CartServiceService.cart.set(this.productCard.offerId, this.inCart);
       CartServiceService.cartWasChanged = true;
-      CartServiceService.cart.forEach(console.log);
 
 
       this.http
@@ -75,7 +73,6 @@ export class ProductCardAuthComponent implements OnInit {
           params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('offer_id', "" + this.productCard.offerId)
         })
         .subscribe(result => {
-          console.log('result')
         }, (error) => {
           this.error = error.message
           console.log(error)

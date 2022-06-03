@@ -49,7 +49,6 @@ export class CurrentOrdersComponent implements OnInit {
     this.http.get<Order[]>('http://localhost:8081/rest/orders/params', optionsCurrent).subscribe(result => {
       this.orders = result;
     });
-
   }
 
   showCustomerInfo(): void {
@@ -160,9 +159,7 @@ export class CurrentOrdersComponent implements OnInit {
   }
 
   icons: Icon[] = [
-    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
+    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'}
   ]
 
   productCards: ProductCard[] = [];
@@ -263,5 +260,4 @@ export class CurrentOrdersComponent implements OnInit {
         });
     }
   }
-
 }

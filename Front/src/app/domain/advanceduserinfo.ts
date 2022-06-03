@@ -6,4 +6,5 @@ export class Advanceduserinfo {
   phoneNumber!: string;
   lastDeliveryAddress!: string;
   birthDate!: string;
+
 }

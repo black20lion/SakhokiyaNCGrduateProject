@@ -1,157 +1,3 @@
-<!--<div class="container" xmlns="http://www.w3.org/1999/html">-->
-<!--  <header>-->
-<!--    <div>-->
-<!--      <img id="logo" width=200 height=169 src="../assets/img/logo/logo.jpeg" alt="Магазин Lion's Style"/>-->
-<!--      <span id="city">г. Нижний Новгород </span>-->
-<!--      <span id="phone">8(999)120-8858</span>-->
-<!--      <span id="markUserIsAuthorized">Вы вошли как {{email}}</span>-->
-<!--      <span id="menuIcons">-->
-<!--      <app-icon-authorized-->
-<!--        *ngFor="let iterIcon of icons; let idx = index"-->
-<!--        [icon]="iterIcon"-->
-<!--        [index]="idx+1">-->
-<!--      </app-icon-authorized>-->
-<!--      </span>-->
-<!--    </div>-->
-
-<!--    <span id="forWomen" (mouseover)="showFemaleMenu()" (mouseleave)="hideFemaleMenu()"-->
-<!--          [ngClass]="{selected: femaleMenuShow === true}">-->
-<!--      Женщинам-->
-<!--    </span>-->
-
-<!--    <span id="forMen" (mouseover)="showMaleMenu()" (mouseleave)="hideMaleMenu()"-->
-<!--          [ngClass]="{selected: maleMenuShow === true}">-->
-<!--      Мужчинам-->
-<!--    </span>-->
-
-<!--    <span id="sale">-->
-<!--      Распродажа-->
-<!--    </span>-->
-
-<!--    <span id="novelty">-->
-<!--      Новинки-->
-<!--    </span>-->
-
-<!--    <span id="aboutMenu">-->
-<!--      О нас-->
-<!--    </span>-->
-
-<!--    <a id="logout" (click)="logOut()">Выйти из аккаунта</a>-->
-<!--  </header>-->
-
-<!--  <div id="femaleCategories" (mouseover)="showFemaleMenu()" (mouseleave)="hideFemaleMenu()">-->
-<!--    <ul *ngIf="(femaleCategory&&femaleMenuShow)">-->
-<!--      <li *ngFor="let iterCategory of femaleCategory">-->
-<!--        <hr>-->
-<!--        {{(iterCategory.name | json).substring(1, iterCategory.name.length + 1)}}</li>-->
-<!--    </ul>-->
-<!--  </div>-->
-
-<!--  <div id="maleCategories" (mouseover)="showMaleMenu()" (mouseleave)="hideMaleMenu()">-->
-<!--    <ul *ngIf="(maleCategory&&maleMenuShow)">-->
-<!--      <li *ngFor="let iterCategory of maleCategory">-->
-<!--        <hr>-->
-<!--        {{(iterCategory.name | json).substring(1, iterCategory.name.length + 1)}}</li>-->
-<!--    </ul>-->
-<!--  </div>-->
-
-<!--  <body style="margin: 0">-->
-
-<!--  <div id="centralBlock">-->
-
-<!--    <h1 id="personnel">Текущие заказы</h1>-->
-
-
-<!--    <table id="personnelNavigation" border="1">-->
-<!--      <tr>-->
-<!--        <td>Личный кабинет</td>-->
-<!--      </tr>-->
-<!--      <tr>-->
-<!--        <td>Персональные данныe</td>-->
-<!--      </tr>-->
-<!--      <tr>-->
-<!--        <td>Текущие заказы</td>-->
-<!--      </tr>-->
-<!--      <tr>-->
-<!--        <td>История заказов</td>-->
-<!--      </tr>-->
-<!--    </table>-->
-
-<!--    <span id="topNavigation">-->
-<!--    <a id="toMainPage" routerLink="../..">Главная</a>-->
-<!--    <a id="dash"> — </a>-->
-<!--    <a id="toPersonnel" routerLink="..">Личный кабинет</a>-->
-<!--    <a id="dash2"> — </a>-->
-<!--    <a id="toCurrentOrders" routerLink=".">Текущие заказы</a>-->
-<!--  </span>-->
-
-<!--    <div id="showCurrentOrders" *ngFor="let currentOrder of orders">-->
-<!--      <p>Заказ # {{currentOrder.id}} от {{currentOrder.dateTime}} на сумму {{currentOrder.totalPrice}}</p>-->
-<!--      <p>Тип доставки: {{currentOrder.deliveryType}}</p>-->
-<!--      <p>Статус заказа: {{currentOrder.orderStatus}}</p>-->
-<!--      <p>Статус оплаты: {{currentOrder.payStatus}}</p>-->
-<!--      <p>Стутус доставки: {{currentOrder.deliveryStatus}}</p>-->
-<!--    </div>-->
-
-
-<!--    <footer style="color: white">-->
-<!--      <div id="footerAbout">-->
-<!--        <ul>-->
-<!--          <li id="footerAboutHeader"><a>КОМПАНИЯ</a></li>-->
-<!--          <li><a>О компании</a></li>-->
-<!--          <li><a>Новости</a></li>-->
-<!--          <li><a>Работа у нас</a></li>-->
-<!--          <li><a>Контакты</a></li>-->
-<!--          <li><a>Оптовая торговля</a></li>-->
-<!--          <li><a>Карта рассрочки</a></li>-->
-<!--          <li><a>Подарочные карты</a></li>-->
-<!--        </ul>-->
-<!--      </div>-->
-
-<!--      <div id="footerInfo">-->
-<!--        <ul>-->
-<!--          <li id="footerInfoHeader"><a>ИНФОРМАЦИЯ</a></li>-->
-<!--          <li><a>Магазины</a></li>-->
-<!--          <li><a>Условия оплаты</a></li>-->
-<!--          <li><a>Условия доставки</a></li>-->
-<!--          <li><a>Возврат</a></li>-->
-<!--          <li id="footerConfidentialPolicy"><a>Политика<br>конфиденциальности</a></li>-->
-<!--        </ul>-->
-<!--      </div>-->
-
-<!--      <div class="social vk">-->
-<!--        <a href="#" target="_blank"><i class="fa fa-vk fa-2x"></i></a>-->
-<!--      </div>-->
-
-<!--      <div class="social instagram">-->
-<!--        <a href="#" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>-->
-<!--      </div>-->
-
-<!--      <div class="social telegram">-->
-<!--        <a href="#" target="_blank"><i class="fa fa-paper-plane fa-2x"></i></a>-->
-<!--      </div>-->
-
-<!--      <div class="social whatsapp">-->
-<!--        <a href="#" target="_blank"><i class="fa fa-whatsapp fa-2x"></i></a>-->
-<!--      </div>-->
-
-<!--      <hr id="leftFooterLine">-->
-
-<!--      <hr id="rightFooterLine">-->
-
-<!--      <a id="footerInfoEnding">2022 © Lion-style.ru – Интернет-магазин одежды </a>-->
-
-<!--      <img id="masterCard" src="assets/img/icons/mastercard.png">-->
-<!--      <img id="visa" src="assets/img/icons/visa.png">-->
-<!--      <img id="mir" src="assets/img/icons/mir.svg">-->
-<!--      <button id="subscribe">ПОДПИСАТЬСЯ НА РАССЫЛКУ <img id="letter" src="assets/img/icons/letter.png"></button>-->
-
-<!--      <a id="footerPhone">8 (999) 120-8858</a>-->
-<!--      <img id="footerPhoneIcon" src="assets/img/icons/phone.png">-->
-<!--    </footer>-->
-<!--  </body>-->
-<!--</div>-->
-
 <div class="container" xmlns="http://www.w3.org/1999/html">
   <header>
     <div>
@@ -159,12 +5,23 @@
       <span id="city">г. Нижний Новгород </span>
       <span id="phone">8(999)120-8858</span>
       <span id="markUserIsAuthorized">Вы вошли как {{email}}</span>
+
       <span id="menuIcons">
+
       <app-icon
         *ngFor="let iterIcon of icons; let idx = index"
         [icon]="iterIcon"
         [index]="idx+1">
       </app-icon>
+
+        <a routerLink="..">
+          <img id="disobedientPersonnel" width="30" height="30" src="assets/img/icons/user.png" alt="Личный кабинет">
+        </a>
+
+        <a routerLink="../../cart">
+          <img id="disobedientCart" width="30" height="30" src="assets/img/icons/cart.png" alt="Корзина">
+        </a>
+
       </span>
     </div>
 
@@ -215,6 +72,10 @@
 
     <h1 id="cartTitle">Текущие заказы</h1>
 
+    <div *ngIf="this.orders == null || this.orders.length == 0" id="noCurrentOrders" style="margin-top: 3vw">
+      <a id="sadEmpty">Нет текущих заказов</a>
+    </div>
+
     <span id="topNavigation">
     <a id="toMainPage" routerLink="../..">Главная</a>
     <a id="dash"> — </a>
@@ -223,6 +84,22 @@
     <a id="toCurrentOrders" routerLink=".">Текущие заказы</a>
   </span>
 
+    <table id="personnelNavigation" border="1">
+      <tr id="leftPersonnel">
+        <td><a routerLink="..">Личный кабинет</a></td>
+      </tr>
+      <tr id="leftPersonalInfo">
+        <td><a routerLink="../personal-info">Персональные данныe</a></td>
+      </tr>
+      <tr id="leftCurrentOrders">
+        <td><a routerLink=".">Текущие заказы</a></td>
+      </tr>
+      <tr id="leftOrdersHistory">
+        <td><a routerLink="../orders-history">История заказов</a></td>
+      </tr>
+    </table>
+
+    <div id="outerCurrentOrders">
         <div id="showCurrentOrders" *ngFor="let currentOrder of orders">
           <p>Заказ # {{currentOrder.id}} от {{currentOrder.dateTime}} на сумму {{currentOrder.totalPrice}}</p>
           <p>Тип доставки: {{currentOrder.deliveryType}}</p>
@@ -230,18 +107,7 @@
           <p>Статус оплаты: {{currentOrder.payStatus}}</p>
           <p>Стутус доставки: {{currentOrder.deliveryStatus}}</p>
         </div>
-
-
-<!--    <app-cart-item-->
-<!--      *ngFor="let iterSupportCartItem of supportCartItems; let idx = index"-->
-<!--      [productCard]="iterSupportCartItem.productCard"-->
-<!--      [count]="iterSupportCartItem.count"-->
-<!--      [index]="idx+1">-->
-<!--    </app-cart-item>-->
-
-    <a routerLink=".">
-      <img id="disobedientCart" width="30" height="30" src="assets/img/icons/cart.png" alt="Корзина">
-    </a>
+    </div>
 
   </div>
 

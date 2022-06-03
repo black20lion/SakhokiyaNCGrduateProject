@@ -34,14 +34,11 @@ export class CartServiceService {
       }, (error) => {
         error = error.message
       }, () => {
-        console.log(CartServiceService.refreshedCart)
         CartServiceService.cart.clear()
         for (let current of CartServiceService.refreshedCart) {
           CartServiceService.cart.set(current.offerId, current.quantity)
         }
         CartServiceService.refreshedCart = [];
-        console.log(CartServiceService.cart)
-        console.log(CartServiceService.refreshedCart)
         CartServiceService.cartWasChanged = true;
         CartServiceService.cartWasRefreshed = true;
       });

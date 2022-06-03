@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Token} from "../../domain/token";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {CartServiceService} from "../cart-service/cart-service.service";
+import {Advanceduserinfo} from "../../domain/advanceduserinfo";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,8 @@ export class TokenServiceService {
   public static token: Token;
   public static email: string;
   public static tokenIsOld: boolean = false;
+  public static advancedUserInfo: Advanceduserinfo;
+  public static infoWasChanged: boolean = false;
   constructor() { }
 
   public static refreshToken(http: HttpClient) {

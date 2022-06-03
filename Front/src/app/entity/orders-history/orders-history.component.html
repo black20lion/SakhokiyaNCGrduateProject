@@ -6,11 +6,20 @@
       <span id="phone">8(999)120-8858</span>
       <span id="markUserIsAuthorized">Вы вошли как {{email}}</span>
       <span id="menuIcons">
-      <app-icon-authorized
+      <app-icon
         *ngFor="let iterIcon of icons; let idx = index"
         [icon]="iterIcon"
         [index]="idx+1">
-      </app-icon-authorized>
+      </app-icon>
+
+        <a routerLink="..">
+          <img id="disobedientPersonnel" width="30" height="30" src="assets/img/icons/user.png" alt="Личный кабинет">
+        </a>
+
+        <a routerLink="../../cart">
+          <img id="disobedientCart" width="30" height="30" src="assets/img/icons/cart.png" alt="Корзина">
+        </a>
+
       </span>
     </div>
 
@@ -37,6 +46,7 @@
     </span>
 
     <a id="logout" (click)="logOut()">Выйти из аккаунта</a>
+
   </header>
 
   <div id="femaleCategories" (mouseover)="showFemaleMenu()" (mouseleave)="hideFemaleMenu()">
@@ -54,33 +64,46 @@
         {{(iterCategory.name | json).substring(1, iterCategory.name.length + 1)}}</li>
     </ul>
   </div>
-  <body>
-  <h1 id="personnel">История заказов</h1>
 
-  <span id="topNavigation">
+  <body style="margin: 0">
+  <div id="centralCartBlock">
+
+    <h1 id="cartTitle">История заказов</h1>
+
+    <span id="topNavigation">
     <a id="toMainPage" routerLink="../..">Главная</a>
     <a id="dash"> — </a>
     <a id="toPersonnel" routerLink="..">Личный кабинет</a>
     <a id="dash2"> — </a>
-    <a id="toOrdersHistory" routerLink=".">История заказов</a>
+    <a id="toCurrentOrders" routerLink=".">История заказов</a>
   </span>
 
-  <table id="personnelNavigation" border="1">
-    <tr>
-      <td>Личный кабинет</td>
-    </tr>
-    <tr>
-      <td>Персональные данныe</td>
-    </tr>
-    <tr>
-      <td>Текущие заказы</td>
-    </tr>
-    <tr>
-      <td>История заказов</td>
-    </tr>
-  </table>
+    <table id="personnelNavigation" border="1">
+      <tr id="leftPersonnel">
+        <td><a routerLink="..">Личный кабинет</a></td>
+      </tr>
+      <tr id="leftPersonalInfo">
+        <td><a routerLink="../personal-info">Персональные данныe</a></td>
+      </tr>
+      <tr id="leftCurrentOrders">
+        <td><a routerLink="../current-orders">Текущие заказы</a></td>
+      </tr>
+      <tr id="leftOrdersHistory">
+        <td><a routerLink=".orders-history">История заказов</a></td>
+      </tr>
+    </table>
 
+    <div id="outerCurrentOrders">
+      <div id="showCurrentOrders" *ngFor="let currentOrder of orders">
+        <p>Заказ # {{currentOrder.id}} от {{currentOrder.dateTime}} на сумму {{currentOrder.totalPrice}}</p>
+        <p>Тип доставки: {{currentOrder.deliveryType}}</p>
+        <p>Статус заказа: {{currentOrder.orderStatus}}</p>
+        <p>Статус оплаты: {{currentOrder.payStatus}}</p>
+        <p>Стутус доставки: {{currentOrder.deliveryStatus}}</p>
+      </div>
+    </div>
 
+  </div>
 
   <footer style="color: white">
     <div id="footerAbout">
@@ -140,3 +163,5 @@
   </footer>
   </body>
 </div>
+
+

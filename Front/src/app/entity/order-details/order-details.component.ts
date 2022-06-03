@@ -5,12 +5,11 @@ import {Product} from "../../domain/product";
 import {Offer} from "../../domain/offer";
 import {UserInfo} from "../../domain/userInfo";
 import {Token} from "../../domain/token";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {CartServiceService} from "../../services/cart-service/cart-service.service";
 import {ProductCardServiceService} from "../../services/product-card-service/product-card-service.service";
 import {TokenServiceService} from "../../services/token-service/token-service.service";
-
 
 export interface supportCartItem {
   productCard: ProductCard
@@ -18,11 +17,13 @@ export interface supportCartItem {
 }
 
 @Component({
-  selector: 'app-cart-auth',
-  templateUrl: './cart-auth.component.html',
-  styleUrls: ['./cart-auth.component.scss']
+  selector: 'app-order-details',
+  templateUrl: './order-details.component.html',
+  styleUrls: ['./order-details.component.scss']
 })
-export class CartAuthComponent implements OnInit {
+export class OrderDetailsComponent implements OnInit {
+
+
 
   cartProductCards = new Map<ProductCard, number>();
   supportCartItems: supportCartItem[] = [];
@@ -44,6 +45,17 @@ export class CartAuthComponent implements OnInit {
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
   modalWindowOpen: boolean = false;
+
+  public name: string = TokenServiceService.advancedUserInfo.firstName + " " + TokenServiceService.advancedUserInfo.lastName;
+  phone: string = TokenServiceService.advancedUserInfo.phoneNumber;
+  formEmail!: string;
+  deliveryType: String = "DELIVERY";
+  deliveryAddress: string = TokenServiceService.advancedUserInfo.lastDeliveryAddress;
+  payType: String = "CASH";
+  commentary: string = "";
+
+  phoneReg: RegExp = new RegExp("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$");
+  emailReg: RegExp = new RegExp("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
 
 
   constructor(private http: HttpClient, private router: Router) {
@@ -71,6 +83,10 @@ export class CartAuthComponent implements OnInit {
   }
 
   ngDoCheck() {
+
+    console.log(this.deliveryType)
+
+    console.log(this.payType)
 
     let x = 0;
     if ((this.offers.length != 0 && this.products.length != 0)) {
@@ -201,6 +217,7 @@ export class CartAuthComponent implements OnInit {
       this.bestOffers.push(this.productCardsUniqueArticle[3]);
       this.bestOffers.push(this.productCardsUniqueArticle[4]);
       this.productCardsFilled = true
+      this.formEmail = TokenServiceService.email;
     }
   }
 
@@ -231,6 +248,7 @@ export class CartAuthComponent implements OnInit {
         this.error = error.message
         console.log(error)
       }, () => {
+        console.log(this.token.access_token);
         TokenServiceService.loadRefreshTokenTimer();
         this.getUserInfo();
       });
@@ -297,5 +315,28 @@ export class CartAuthComponent implements OnInit {
       }
       this.total += realPrice * currentItem.count;
     }
+  }
+
+  confirmOrder(): void {
+    this.http
+      .post<string>('http://localhost:8081/rest/orders/current', null, {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token.toString()),
+        params: new HttpParams().
+        set('customer_id', "" + TokenServiceService.customerId).
+        set('commentary', "" + this.commentary).
+        set('delivery_address', "" + this.deliveryAddress).
+        set('delivery_type', "" + this.deliveryType).
+        set('delivery_status', "" + "NOT_SHIPPED").
+        set('phone_number', "" + this.phone).
+        set('email', "" + this.formEmail).
+        set('name', "" + this.name).
+        set('pay_type', "" + this.payType)
+      })
+      .subscribe(result => {
+
+      }, (error) => {
+        this.error = error.message
+        console.log(error)
+      });
   }
 }

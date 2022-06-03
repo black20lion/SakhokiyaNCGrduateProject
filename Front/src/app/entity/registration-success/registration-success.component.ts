@@ -24,41 +24,6 @@ export class RegistrationSuccessComponent implements OnInit {
   email!: string;
   hasBeenInitialized: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
-
-    let URL = window.location.href;
-    this.code = URL.substring(142, URL.length);
-    this.state = URL.substring(49, 85);
-    console.log(this.code);
-    console.log(this.state)
-    if (!this.hasBeenInitialized) {
-      this.getToken();
-      this.hasBeenInitialized=true;
-    }
-  }
-
-
-  ngOnInit(): void {
-  }
-
-  ngDoCheck() {
-    let x = 0;
-    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined)) {
-      x++;
-    }
-    if (x === 1) {
-
-    }
-    if (this.advancedUserInfo != undefined) {
-      setTimeout(() => {
-        this.ready = true;
-      }, 500);
-    }
-    if (TokenServiceService.isAuthorized === true) {
-      this.router.navigate(['../authorized']);
-    }
-  }
-
   maleCategory!: Category[];
   femaleCategory!: Category[];
   products: Product[] = [];
@@ -75,6 +40,29 @@ export class RegistrationSuccessComponent implements OnInit {
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
   modalWindowOpen: boolean = false;
+
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
+
+    let URL = window.location.href;
+    this.code = URL.substring(142, URL.length);
+    this.state = URL.substring(49, 85);
+
+    if (!this.hasBeenInitialized) {
+      this.getToken();
+      this.hasBeenInitialized=true;
+    }
+  }
+
+
+  ngOnInit(): void {
+  }
+
+  ngDoCheck() {
+    if (TokenServiceService.isAuthorized === true) {
+      setTimeout(() => this.router.navigate(['../authorized']), 10000)
+    }
+  }
+
 
 
   logOut() {
@@ -177,7 +165,6 @@ export class RegistrationSuccessComponent implements OnInit {
         this.error = error.message
         console.log(error)
       }, () => {
-        console.log(this.token.access_token);
         TokenServiceService.loadRefreshTokenTimer();
         this.getUserInfo();
       });
@@ -198,22 +185,15 @@ export class RegistrationSuccessComponent implements OnInit {
           this.error = error.message
           console.log(error)
         }, () => {
-          console.log(this.userInfo.given_name)
-          console.log(this.userInfo.family_name)
-          console.log(this.userInfo.email)
-          console.log(this.cookieService.get('JSESSIONID'))
           this.createUser();
           TokenServiceService.token = this.token;
           TokenServiceService.email = this.email;
           TokenServiceService.isAuthorized = true;
-          this.router.navigate(['../authorized'])
         });
     }
   }
 
   createUser():void {
-
-
 
     this.http
       .post<string>('http://localhost:8081/rest/users/createUser', null, {
@@ -221,7 +201,7 @@ export class RegistrationSuccessComponent implements OnInit {
         params: new HttpParams().set('firstName', this.userInfo.given_name).set('lastName', this.userInfo.family_name).set('email', this.userInfo.email)
       })
       .subscribe(result => {
-        console.log('result')
+
       }, (error) => {
         this.error = error.message
         console.log(error)
@@ -229,6 +209,4 @@ export class RegistrationSuccessComponent implements OnInit {
 
       });
   }
-
-
 }

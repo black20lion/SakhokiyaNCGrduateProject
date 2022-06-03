@@ -6,7 +6,6 @@ import {Offer} from "./domain/offer";
 import {Token} from "./domain/token";
 import {Category} from "./domain/category";
 import {UserInfo} from "./domain/userInfo";
-import {MainPageComponent} from "./entity/main-page/main-page.component";
 import {TokenServiceService} from "./services/token-service/token-service.service";
 
 export interface Icon {
@@ -50,22 +49,6 @@ export class AppComponent implements OnInit, DoCheck {
 
   constructor(private http: HttpClient) {
 
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/MALE').subscribe(result => {
-      this.maleCategory = result;
-    });
-
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/FEMALE').subscribe(result => {
-      this.femaleCategory = result;
-    });
-
-    this.http.get<Product[]>('http://localhost:8081/rest/products').subscribe(result => {
-      this.products = result;
-    });
-
-    this.http.get<Offer[]>('http://localhost:8081/rest/offers').subscribe(result => {
-      this.offers = result;
-    });
-
   }
 
   ngOnInit() {
@@ -77,9 +60,7 @@ export class AppComponent implements OnInit, DoCheck {
     if ((this.offers.length != 0 && this.products.length != 0)) {
       x++;
     }
-    if (x === 1) {
-      this.fillProductCards()
-    }
+
     if (TokenServiceService.tokenIsOld) {
 
       TokenServiceService.refreshToken(this.http);
@@ -154,50 +135,6 @@ export class AppComponent implements OnInit, DoCheck {
 
   productCardsFilled = false;
 
-  fillProductCards() {
-    if (!this.productCardsFilled) {
-      for (let i = 0; i < this.offers.length; i++) {
-        this.currentProduct = this.getProductById(this.offers[i].productId);
-
-        this.currentProductCard = {
-          productId: this.currentProduct.id,
-          offerId: this.offers[i].id,
-          price: this.offers[i].price,
-          priceOverride: this.offers[i].price_override,
-          article: this.currentProduct.article,
-          productName: this.currentProduct.productName,
-          imageUrl: this.currentProduct.imageUrl
-        }
-        this.productCards.push(this.currentProductCard)
-      }
-
-      this.productCardsUniqueArticle = this.productCards;
-      let articleList: string[] = [];
-
-      for (let i = this.productCardsUniqueArticle.length - 1; i >= 0; i--) {
-        if (articleList.includes(this.productCardsUniqueArticle[i].article)) {
-          this.productCardsUniqueArticle.splice(i, 1);
-        } else {
-          articleList.push(this.productCardsUniqueArticle[i].article)
-        }
-      }
-
-      this.bestOffers.push(this.productCardsUniqueArticle[0]);
-      this.bestOffers.push(this.productCardsUniqueArticle[1]);
-      this.bestOffers.push(this.productCardsUniqueArticle[2]);
-      this.bestOffers.push(this.productCardsUniqueArticle[3]);
-      this.bestOffers.push(this.productCardsUniqueArticle[4]);
-      this.productCardsFilled = true
-    }
-  }
-
-  changeLogin(event: any) {
-    this.login = event.target.value;
-  }
-
-  changePassword(event: any) {
-    this.password = event.target.value;
-  }
 
   getToken(): void {
     let body = new URLSearchParams();
@@ -232,14 +169,4 @@ export class AppComponent implements OnInit, DoCheck {
         });
     }
   }
-
-  authorize() {
-    this.getToken();
-    setTimeout(() => {
-      this.getUserInfo();
-    }, 300);
-    this.getUserInfo();
-  }
-
-
 }

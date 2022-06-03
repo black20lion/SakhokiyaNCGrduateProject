@@ -8,7 +8,7 @@ import {Offer} from "../../domain/offer";
 import {UserInfo} from "../../domain/userInfo";
 import {Token} from "../../domain/token";
 import {Router} from "@angular/router";
-import {Icon, ProductCard} from "../authorized-page/authorized-page.component";
+import {Icon} from "../authorized-page/authorized-page.component";
 
 @Component({
   selector: 'app-personal-account',
@@ -23,22 +23,6 @@ export class PersonalAccountComponent implements OnInit {
   email!: string;
 
   constructor(private http: HttpClient, private router: Router) {
-
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/MALE').subscribe(result => {
-      this.maleCategory = result;
-    });
-
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/FEMALE').subscribe(result => {
-      this.femaleCategory = result;
-    });
-
-    this.http.get<Product[]>('http://localhost:8081/rest/products').subscribe(result => {
-      this.products = result;
-    });
-
-    this.http.get<Offer[]>('http://localhost:8081/rest/offers').subscribe(result => {
-      this.offers = result;
-    });
 
   }
 
@@ -156,64 +140,8 @@ export class PersonalAccountComponent implements OnInit {
 
   icons: Icon[] = [
     {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
+    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'}
   ]
-
-  productCards: ProductCard[] = [];
-  productCardsUniqueArticle: ProductCard[] = [];
-  bestOffers: ProductCard[] = [];
-  currentProductCard!
-    :
-    ProductCard;
-  currentProduct: Product = new Product();
-
-  productCardsFilled = false;
-
-  fillProductCards() {
-    if (!this.productCardsFilled) {
-      for (let i = 0; i < this.offers.length; i++) {
-        this.currentProduct = this.getProductById(this.offers[i].productId);
-
-        this.currentProductCard = {
-          productId: this.currentProduct.id,
-          offerId: this.offers[i].id,
-          price: this.offers[i].price,
-          priceOverride: this.offers[i].price_override,
-          article: this.currentProduct.article,
-          productName: this.currentProduct.productName,
-          imageUrl: this.currentProduct.imageUrl
-        }
-        this.productCards.push(this.currentProductCard)
-      }
-
-      this.productCardsUniqueArticle = this.productCards;
-      let articleList: string[] = [];
-
-      for (let i = this.productCardsUniqueArticle.length - 1; i >= 0; i--) {
-        if (articleList.includes(this.productCardsUniqueArticle[i].article)) {
-          this.productCardsUniqueArticle.splice(i, 1);
-        } else {
-          articleList.push(this.productCardsUniqueArticle[i].article)
-        }
-      }
-
-      this.bestOffers.push(this.productCardsUniqueArticle[0]);
-      this.bestOffers.push(this.productCardsUniqueArticle[1]);
-      this.bestOffers.push(this.productCardsUniqueArticle[2]);
-      this.bestOffers.push(this.productCardsUniqueArticle[3]);
-      this.bestOffers.push(this.productCardsUniqueArticle[4]);
-      this.productCardsFilled = true
-    }
-  }
-
-  changeLogin(event: any) {
-    this.login = event.target.value;
-  }
-
-  changePassword(event: any) {
-    this.password = event.target.value;
-  }
 
   getToken(): void {
     let body = new URLSearchParams();

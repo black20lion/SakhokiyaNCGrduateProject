@@ -48,10 +48,10 @@
       <p id="mainprompt">Введите логин и пароль <span style="color: red">*</span></p>
 
       <p>Логин</p>
-      <input (input)="changeLogin($event)">
+      <input maxlength="90" (input)="changeLogin($event)">
 
       <p>Пароль</p>
-      <input type="password" (input)="changePassword($event)">
+      <input maxlength="90" type="password" (input)="changePassword($event)">
       <p></p>
 
       <a id="toPersonalAccount"><button id="enter" (click)="getToken()">ВОЙТИ</button></a>

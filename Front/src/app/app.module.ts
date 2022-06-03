@@ -25,6 +25,7 @@ import {ProductCardServiceService} from "./services/product-card-service/product
 import {CartItemComponent} from "./entity/cart-item/cart-item.component";
 import {ProductCardAuthComponent} from "./entity/product-card-auth/product-card-auth.component";
 import {CartAuthComponent} from "./entity/cart-auth/cart-auth.component";
+import {OrderDetailsComponent} from "./entity/order-details/order-details.component";
 
 registerLocaleData(localeRu, 'ru')
 
@@ -37,7 +38,8 @@ const routes = [
   {path: 'authorized/account/orders-history', component: OrdersHistoryComponent},
   {path: 'registration-success', component: RegistrationSuccessComponent},
   {path: 'cart', component: CartComponent},
-  {path: 'authorized/cart', component: CartAuthComponent}
+  {path: 'authorized/cart', component: CartAuthComponent},
+  {path: 'authorized/cart/order-details', component: OrderDetailsComponent}
 ]
 
 @NgModule({
@@ -56,7 +58,8 @@ const routes = [
     CartComponent,
     CartItemComponent,
     ProductCardAuthComponent,
-    CartAuthComponent
+    CartAuthComponent,
+    OrderDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 import {Component, OnInit, DoCheck} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
 import {Product} from "../../domain/product";
 import {Offer} from "../../domain/offer";
@@ -9,6 +9,7 @@ import {UserInfo} from "../../domain/userInfo";
 import {TokenServiceService} from "../../services/token-service/token-service.service";
 import {Router} from "@angular/router";
 import {ProductCardServiceService} from "../../services/product-card-service/product-card-service.service";
+import {Advanceduserinfo} from "../../domain/advanceduserinfo";
 
 export interface Icon {
   width: number
@@ -219,7 +220,7 @@ export class MainPageComponent implements OnInit, DoCheck {
         this.error = error.message
       console.log(error)
       }, () => {
-        console.log(this.token.access_token);
+
         TokenServiceService.loadRefreshTokenTimer();
         this.getUserInfo();
       });
@@ -243,8 +244,22 @@ export class MainPageComponent implements OnInit, DoCheck {
           TokenServiceService.token = this.token;
           TokenServiceService.email = this.email;
           TokenServiceService.isAuthorized = true;
+          this.getAdvancedUserInfo();
           this.router.navigate(['../authorized'])
         });
     }
+  }
+
+  getAdvancedUserInfo():void {
+    let options = {
+      headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
+      params: new HttpParams().set('email', "" + TokenServiceService.email)
+    };
+
+    this.http
+      .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
+      .subscribe(result => {
+        TokenServiceService.advancedUserInfo = result;
+      });
   }
 }

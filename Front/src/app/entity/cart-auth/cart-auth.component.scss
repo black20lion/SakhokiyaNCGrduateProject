@@ -951,6 +951,7 @@ img#disobedientCart {
 }
 
 img#disobedientCart:hover {
+  z-index: 10000;
   opacity: 1;
 }
 

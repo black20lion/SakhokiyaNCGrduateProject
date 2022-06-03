@@ -9,15 +9,15 @@ import {TokenServiceService} from "../../services/token-service/token-service.se
 import {UserInfo} from "../../domain/userInfo";
 import {Token} from "../../domain/token";
 import {Icon, ProductCard} from "../authorized-page/authorized-page.component";
+import {Order} from "../../domain/order";
 
 @Component({
   selector: 'app-orders-history',
   templateUrl: './orders-history.component.html',
   styleUrls: ['./orders-history.component.scss']
 })
-export class OrdersHistoryComponent implements OnInit {
-
-  advancedUserInfo!: Advanceduserinfo;
+export class OrdersHistoryComponent implements OnInit {  advancedUserInfo!: Advanceduserinfo;
+  orders!: Order[];
   methodHasBeenCalled: boolean = false;
   ready: boolean = false;
   email!: string;
@@ -40,6 +40,13 @@ export class OrdersHistoryComponent implements OnInit {
       this.offers = result;
     });
 
+    let optionsCurrent = {
+      headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
+      params: new HttpParams().set('customer_id', "" + TokenServiceService.customerId).set('not_completed', "true")
+    }
+    this.http.get<Order[]>('http://localhost:8081/rest/orders/params', optionsCurrent).subscribe(result => {
+      this.orders = result;
+    });
   }
 
   showCustomerInfo(): void {
@@ -150,9 +157,7 @@ export class OrdersHistoryComponent implements OnInit {
   }
 
   icons: Icon[] = [
-    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
+    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'}
   ]
 
   productCards: ProductCard[] = [];
@@ -253,5 +258,4 @@ export class OrdersHistoryComponent implements OnInit {
         });
     }
   }
-
 }

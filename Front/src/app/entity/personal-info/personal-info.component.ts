@@ -21,62 +21,7 @@ export class PersonalInfoComponent implements OnInit {
   methodHasBeenCalled: boolean = false;
   ready: boolean = false;
   email!: string;
-
-  constructor(private http: HttpClient, private router: Router) {
-
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/MALE').subscribe(result => {
-      this.maleCategory = result;
-    });
-
-    this.http.get<Category[]>('http://localhost:8081/rest/categories/FEMALE').subscribe(result => {
-      this.femaleCategory = result;
-    });
-
-    this.http.get<Product[]>('http://localhost:8081/rest/products').subscribe(result => {
-      this.products = result;
-    });
-
-    this.http.get<Offer[]>('http://localhost:8081/rest/offers').subscribe(result => {
-      this.offers = result;
-    });
-
-  }
-
-  showCustomerInfo(): void {
-    if (!this.methodHasBeenCalled) {
-      let options = {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
-        params: new HttpParams().set('email', "" + TokenServiceService.email)
-      };
-
-      this.email = TokenServiceService.email;
-
-      this.http
-        .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
-        .subscribe(result => {
-          this.advancedUserInfo = result;
-        });
-      this.methodHasBeenCalled = true;
-    }
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngDoCheck() {
-    let x = 0;
-    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined)) {
-      x++;
-    }
-    if (x === 1) {
-      this.showCustomerInfo()
-    }
-    if (this.advancedUserInfo != undefined) {
-      setTimeout(() => {
-        this.ready =true;
-      }, 500);
-    }
-  }
+  formEmail!: string;
 
   maleCategory!: Category[];
   femaleCategory!: Category[];
@@ -92,7 +37,56 @@ export class PersonalInfoComponent implements OnInit {
   maleMenuShow: boolean = false;
   femaleMenuShow: boolean = false;
   modalWindowOpen: boolean = false;
+  infoWasChanged: boolean = false;
 
+  phoneReg: RegExp = new RegExp("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$");
+  emailReg: RegExp = new RegExp("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+
+
+  icons: Icon[] = [
+    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'}
+  ]
+
+  productCards: ProductCard[] = [];
+  productCardsUniqueArticle: ProductCard[] = [];
+  bestOffers: ProductCard[] = [];
+  currentProductCard!
+    :
+    ProductCard;
+  currentProduct: Product = new Product();
+
+  productCardsFilled = false;
+
+  constructor(private http: HttpClient, private router: Router) {
+
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngDoCheck() {
+    if (!TokenServiceService.infoWasChanged) {
+      this.initCustomerInfo()
+      this.infoWasChanged = false;
+    }
+
+    if (TokenServiceService.infoWasChanged) {
+      this.infoWasChanged = true;
+    }
+  }
+
+
+  initCustomerInfo(): void {
+    this.advancedUserInfo = TokenServiceService.advancedUserInfo;
+
+    this.formEmail = TokenServiceService.email;
+    this.email = TokenServiceService.email;
+  }
+
+  markChange(): void {
+    this.infoWasChanged = true;
+    TokenServiceService.infoWasChanged = true;
+  }
 
   logOut() {
     TokenServiceService.email = "";
@@ -149,108 +143,46 @@ export class PersonalInfoComponent implements OnInit {
     return BigInt(number)
   }
 
-  icons: Icon[] = [
-    {width: 30, height: 30, src: 'assets/img/icons/search.png', alt: 'Поиск'},
-    {width: 30, height: 30, src: 'assets/img/icons/user.png', alt: 'Личный кабинет'},
-    {width: 30, height: 30, src: 'assets/img/icons/cart.png', alt: 'Корзина'}
-  ]
+  saveChanges():void {
+    this.http
+      .post('http://localhost:8081/rest/users/updateUserInfo', null, {
+        responseType: "text",
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token.toString()),
+        params: new HttpParams().
+        set('customerId', "" + new Number(TokenServiceService.customerId)).
+        set('firstName', "" + this.advancedUserInfo.firstName).
+        set('lastName', "" + this.advancedUserInfo.lastName).
+        set('gender', "" + this.advancedUserInfo.gender).
+        set('phoneNumber', "" + this.advancedUserInfo.phoneNumber).
+        set('lastDeliveryAddress', "" + this.advancedUserInfo.lastDeliveryAddress == null ? "" : this.advancedUserInfo.lastDeliveryAddress).
+        set('birthDate', "" + this.advancedUserInfo.birthDate)
+      })
+      .subscribe(result => {
+        console.log("OK")
+      }, () => {}, () => {
+        this.initInfoUpdate();
+      });
 
-  productCards: ProductCard[] = [];
-  productCardsUniqueArticle: ProductCard[] = [];
-  bestOffers: ProductCard[] = [];
-  currentProductCard!
-    :
-    ProductCard;
-  currentProduct: Product = new Product();
-
-  productCardsFilled = false;
-
-  fillProductCards() {
-    if (!this.productCardsFilled) {
-      for (let i = 0; i < this.offers.length; i++) {
-        this.currentProduct = this.getProductById(this.offers[i].productId);
-
-        this.currentProductCard = {
-          productId: this.currentProduct.id,
-          offerId: this.offers[i].id,
-          price: this.offers[i].price,
-          priceOverride: this.offers[i].price_override,
-          article: this.currentProduct.article,
-          productName: this.currentProduct.productName,
-          imageUrl: this.currentProduct.imageUrl
-        }
-        this.productCards.push(this.currentProductCard)
-      }
-
-      this.productCardsUniqueArticle = this.productCards;
-      let articleList: string[] = [];
-
-      for (let i = this.productCardsUniqueArticle.length - 1; i >= 0; i--) {
-        if (articleList.includes(this.productCardsUniqueArticle[i].article)) {
-          this.productCardsUniqueArticle.splice(i, 1);
-        } else {
-          articleList.push(this.productCardsUniqueArticle[i].article)
-        }
-      }
-
-      this.bestOffers.push(this.productCardsUniqueArticle[0]);
-      this.bestOffers.push(this.productCardsUniqueArticle[1]);
-      this.bestOffers.push(this.productCardsUniqueArticle[2]);
-      this.bestOffers.push(this.productCardsUniqueArticle[3]);
-      this.bestOffers.push(this.productCardsUniqueArticle[4]);
-      this.productCardsFilled = true
-    }
   }
 
-  changeLogin(event: any) {
-    this.login = event.target.value;
-  }
-
-  changePassword(event: any) {
-    this.password = event.target.value;
-  }
-
-  getToken(): void {
-    let body = new URLSearchParams();
-    body.set('username', this.login);
-    body.set('password', this.password);
-    body.set('client_id', "springboot-keycloak");
-    body.set('grant_type', "password");
-
+  initInfoUpdate():void {
     let options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+      headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
+      params: new HttpParams().set('email', "" + TokenServiceService.email)
     };
 
+    this.email = TokenServiceService.email;
+
     this.http
-      .post<Token>('http://localhost:8080/realms/shop/protocol/openid-connect/token', body.toString(), options)
-      .subscribe((result) => {
-        this.token = result;
-      }, (error) => {
-        this.error = error.message
-        console.log(error)
+      .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
+      .subscribe(result => {
+        this.advancedUserInfo = result;
+        TokenServiceService.advancedUserInfo = result;
       }, () => {
-        this.getUserInfo()
+      }, () => {
+        TokenServiceService.infoWasChanged = false
+        this.infoWasChanged = false
       });
   }
-
-  getUserInfo():void {
-    if (this.token != undefined) {
-      let options = {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token.access_token.toString())
-      };
-
-      this.http
-        .get<UserInfo>('http://localhost:8080/realms/shop/protocol/openid-connect/userinfo', options)
-        .subscribe(result => {
-          this.userInfo = result;
-          this.email = result.email;
-        }, (error) => {
-          this.error = error.message
-          console.log(error)
-        }, () => {
-          TokenServiceService.token = this.token;
-          TokenServiceService.email = this.email;
-        });
-    }
-  }
 }
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 
 import {Product} from "../../domain/product";
@@ -10,7 +10,6 @@ import {TokenServiceService} from "../../services/token-service/token-service.se
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Advanceduserinfo} from "../../domain/advanceduserinfo";
-import {Basketitem} from "../../domain/basketitem";
 import {CartServiceService} from "../../services/cart-service/cart-service.service";
 
 export interface Icon {
@@ -75,18 +74,18 @@ export class AuthorizedPageComponent implements OnInit {
       this.offers = result;
     });
 
+    this.email = TokenServiceService.email;
+
     let options = {
       headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
       params: new HttpParams().set('email', "" + TokenServiceService.email)
     };
 
-    this.email = TokenServiceService.email;
-
     this.http
       .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
       .subscribe(result => {
-        this.advancedUserInfo = result;
-        TokenServiceService.customerId = this.advancedUserInfo.customerId;
+        TokenServiceService.advancedUserInfo = result; }, ()=> { }, ( ) => {
+        TokenServiceService.customerId = TokenServiceService.advancedUserInfo.customerId;
       });
   }
 
@@ -94,6 +93,27 @@ export class AuthorizedPageComponent implements OnInit {
   }
 
   ngDoCheck() {
+
+
+    if (TokenServiceService.infoWasChanged) {
+      let options = {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + TokenServiceService.token.access_token),
+        params: new HttpParams().set('email', "" + TokenServiceService.email)
+      };
+
+      this.email = TokenServiceService.email;
+
+      this.http
+        .get<Advanceduserinfo>('http://localhost:8081/rest/users/email', options)
+        .subscribe(result => {
+          this.advancedUserInfo = result;
+          TokenServiceService.advancedUserInfo = result;
+        }, () => {
+        }, () => {
+          TokenServiceService.customerId = this.advancedUserInfo.customerId;
+          TokenServiceService.infoWasChanged = false
+        });
+    }
 
     let x = 0;
     let y = 0;
@@ -108,8 +128,8 @@ export class AuthorizedPageComponent implements OnInit {
       y++;
     }
 
-    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined) && (!this.primarlyRefreshed)) {
-      setTimeout(()=> this.refreshCart(), 1000);
+    if ((TokenServiceService.token != undefined && TokenServiceService.email != undefined) && (!this.primarlyRefreshed) && (!TokenServiceService.infoWasChanged)) {
+      setTimeout(() => this.refreshCart(), 1000);
     }
 
     if (y === 1) {
@@ -117,7 +137,7 @@ export class AuthorizedPageComponent implements OnInit {
       this.token = TokenServiceService.token;
     }
 
-    if (TokenServiceService.isAuthorized === false) {
+    if (!TokenServiceService.isAuthorized) {
       this.router.navigate(['..']);
     }
 
@@ -259,7 +279,7 @@ export class AuthorizedPageComponent implements OnInit {
       });
   }
 
-  getUserInfo():void {
+  getUserInfo(): void {
     if (this.token != undefined) {
       let options = {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token.access_token.toString())
@@ -281,7 +301,7 @@ export class AuthorizedPageComponent implements OnInit {
   }
 
 
-  refreshCart():void {
+  refreshCart(): void {
     CartServiceService.refreshCart(this.http);
     this.primarlyRefreshed = true;
   }

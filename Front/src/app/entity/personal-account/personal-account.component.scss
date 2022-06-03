@@ -207,8 +207,9 @@ a#completedOrdersLabel {
 }
 
 table#personnelNavigation {
+
   font-size: 1.5vw;
-  z-index: -100;
+  z-index: 10000;
   position: relative;
   top: 13.5vw;
   left: 13.35vw;
@@ -217,10 +218,66 @@ table#personnelNavigation {
   border-color: grey;
   border-style: none;
   width: 15vw;
+
   tr {
     text-align: center;
     width: 10vw;
     height: 3vw;
+  }
+
+  tr#leftPersonnel {
+    a {
+      color: black;
+      text-decoration: none;
+    }
+  }
+
+  tr#leftPersonalInfo {
+    a {
+      color: black;
+      text-decoration: none;
+      opacity: 0.5;
+    }
+  }
+
+  tr#leftPersonalInfo:hover {
+    a {
+      color: black;
+      text-decoration: none;
+      opacity: 1;
+    }
+  }
+
+  tr#leftCurrentOrders {
+    a {
+      color: black;
+      text-decoration: none;
+      opacity: 0.5;
+    }
+  }
+
+  tr#leftCurrentOrders:hover {
+    a {
+      color: black;
+      text-decoration: none;
+      opacity: 1;
+    }
+  }
+
+  tr#leftOrdersHistory {
+    a {
+      color: black;
+      text-decoration: none;
+      opacity: 0.5;
+    }
+  }
+
+  tr#leftOrdersHistory:hover {
+    a {
+      color: black;
+      text-decoration: none;
+      opacity: 1;
+    }
   }
 }
 
@@ -936,3 +993,15 @@ div#centralAccountBloack {
   top: 35vw;
 }
 
+img#disobedientCart {
+  position: relative;
+  left: 7.4vw;
+  opacity: 0.5;
+  bottom: 0.0vw;
+  width: 1.45vw;
+  height: 1.5vw;
+}
+
+img#disobedientCart:hover {
+  opacity: 1;
+}

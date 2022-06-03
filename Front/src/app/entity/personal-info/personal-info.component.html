@@ -11,6 +11,15 @@
         [icon]="iterIcon"
         [index]="idx+1">
       </app-icon-authorized>
+
+         <a routerLink="..">
+          <img id="disobedientPersonnel" width="30" height="30" src="assets/img/icons/user.png" alt="Личный кабинет">
+        </a>
+
+        <a routerLink="../../cart">
+          <img id="disobedientCart" width="30" height="30" src="assets/img/icons/cart.png" alt="Корзина">
+        </a>
+
       </span>
     </div>
 
@@ -68,48 +77,79 @@
   </span>
 
     <table id="personnelNavigation" border="1">
-      <tr>
-        <td>Личный кабинет</td>
+      <tr id="leftPersonnel">
+        <td><a routerLink="..">Личный кабинет</a></td>
       </tr>
-      <tr>
-        <td>Персональные данныe</td>
+      <tr id="leftPersonalInfo">
+        <td><a routerLink=".personal-info">Персональные данныe</a></td>
       </tr>
-      <tr>
-        <td>Текущие заказы</td>
+      <tr id="leftCurrentOrders">
+        <td><a routerLink="../current-orders">Текущие заказы</a></td>
       </tr>
-      <tr>
-        <td>История заказов</td>
+      <tr id="leftOrdersHistory">
+        <td><a routerLink="../orders-history">История заказов</a></td>
       </tr>
     </table>
 
-    <div id="infoItems">
-      <p *ngIf="ready">
-        Имя: {{advancedUserInfo.firstName}}
-      </p>
+    <table id="tablePersonalInfo" (input)="markChange()">
+      <tr>
+        <td class="title" style="min-width: 15vw">Имя:</td>
+        <td class="form"><input maxlength="90" type="text" value="{{advancedUserInfo.firstName}}" [(ngModel)]="advancedUserInfo.firstName" ></td>
+        <td style="min-width: 30vw; text-align: left"><a style="color: red" *ngIf="advancedUserInfo.firstName.length < 1">Не указано</a></td>
+      </tr>
 
-      <p *ngIf="ready">
-        Фамилия: {{advancedUserInfo.lastName}}
-      </p>
+      <tr>
+        <td class="title" style="min-width: 15vw">Фамилия:</td>
+        <td class="form"><input maxlength="90" type="text" value="{{advancedUserInfo.lastName}}" [(ngModel)]="advancedUserInfo.lastName" ></td>
+        <td style="min-width: 30vw; text-align: left"><a style="color: red" *ngIf="advancedUserInfo.lastName.length < 1">Не указана</a></td>
+      </tr>
 
-      <p *ngIf="ready">
-        Логин: {{email}}
-      </p>
+      <tr>
+        <td class="title">E-mail:</td>
+        <td><input maxlength="90" type="text" value="{{formEmail}}" [(ngModel)]="formEmail"></td>
+        <td style="min-width: 30vw; text-align: left"><a style="color: red" *ngIf="!emailReg.test(formEmail)">Введите корректный E-mail</a></td>
+      </tr>
 
-      <p *ngIf="ready">
-        Телефон: {{advancedUserInfo.phoneNumber}}
-      </p>
+      <tr>
+        <td class="title">Телефон:</td>
+        <td><input maxlength="20" type="text" value="{{advancedUserInfo.phoneNumber}}" [(ngModel)]="advancedUserInfo.phoneNumber"></td>
+        <td style="min-width: 30vw; text-align: left"><a style="color: red" *ngIf="advancedUserInfo.phoneNumber == null || advancedUserInfo.phoneNumber.length == 0">Не указан</a><a style="color: red" *ngIf="advancedUserInfo.phoneNumber != null && advancedUserInfo.phoneNumber.length != 0 && !phoneReg.test(advancedUserInfo.phoneNumber)">Не корректный</a></td>
+      </tr>
 
-      <p *ngIf="ready">
-        Адрес доставки: {{advancedUserInfo.lastDeliveryAddress}}
-      </p>
+      <tr>
+        <td class="title">Адрес доставки:</td>
+        <td><input maxlength="200" type="text" value="{{advancedUserInfo.lastDeliveryAddress}}" [(ngModel)]="advancedUserInfo.lastDeliveryAddress"></td>
+        <td style="min-width: 30vw; text-align: left"><a style="color: red" *ngIf="advancedUserInfo.lastDeliveryAddress == null">Не указан</a></td>
+      </tr>
 
-      <p *ngIf="ready">
-        Пол: {{advancedUserInfo.gender}}
-      </p>
 
-      <p *ngIf="ready">
-        Дата рождения: {{advancedUserInfo.birthDate}}
-      </p>
+      <tr>
+        <td class="title">Пол:</td>
+        <td>
+          <select [(ngModel)]="advancedUserInfo.gender">
+
+            <option value=UNSET>Не указан</option>
+
+            <option value=MALE>Мужской</option>
+
+            <option value=FEMALE>Женский</option>
+
+          </select>
+        </td>
+      </tr>
+
+    </table>
+
+    <div *ngIf="infoWasChanged && advancedUserInfo.firstName.length > 1 && advancedUserInfo.lastName.length > 1 && formEmail.length > 1 && emailReg.test(formEmail) && (advancedUserInfo.phoneNumber == null || advancedUserInfo.phoneNumber.length == 0 || phoneReg.test(advancedUserInfo.phoneNumber))" id="confirmChanges">
+      <a routerLink=".">
+        <button (click)="saveChanges()">Сохранить изменения</button>
+      </a>
+    </div>
+
+  <div *ngIf="!(infoWasChanged && advancedUserInfo.firstName.length > 1 && advancedUserInfo.lastName.length > 1 && formEmail.length > 1 && emailReg.test(formEmail) && (advancedUserInfo.phoneNumber == null || advancedUserInfo.phoneNumber.length == 0 || phoneReg.test(advancedUserInfo.phoneNumber)))" id="confirmChangesInactive">
+      <a>
+        <button>Сохранить изменения</button>
+      </a>
     </div>
   </div>
 

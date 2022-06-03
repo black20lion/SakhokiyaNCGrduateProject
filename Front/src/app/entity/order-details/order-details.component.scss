@@ -1,5 +1,19 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 
+
+html {
+  body {
+    margin: 0;
+
+    &.scrollHidden {
+      overflow: hidden;
+    }
+
+    &.scrollShowed {
+    }
+  }
+}
+
 .social {
   float: left;
   top: 31.5vw;
@@ -102,15 +116,6 @@
   margin: 0 auto;
 }
 
-body {
-  &.scrollHidden {
-    overflow: hidden;
-  }
-
-  &.scrollShowed {
-
-  }
-}
 
 a#logout {
   font-weight: bold;
@@ -130,18 +135,12 @@ a#logout:hover {
   color: darkgoldenrod;
 }
 
-div#infoItems {
-  position: relative;
-  left: 35vw;
-  font-size: 1.5vw;
-}
-
-h1#personnel {
+h1#orderDetailsTitle {
   font-size: 2vw;
   position: relative;
-  top: 13vw;
+  top: 0vw;
   left: 13.5vw;
-  width: 25vw;
+  width: 20vw;
   z-index: -100;
 }
 
@@ -154,6 +153,8 @@ img#infoPersonnel {
 }
 
 a#infoPersonnelLabel {
+  text-decoration: none;
+  color: black;
   position: relative;
   top: 3.5vw;
   left: 2.3vw;
@@ -180,6 +181,8 @@ img#currentOrders:hover {
 }
 
 a#currentOrdersLabel {
+  text-decoration: none;
+  color: black;
   position: relative;
   top: 3.5vw;
   left: 8.2vw;
@@ -200,92 +203,18 @@ img#completedOrders:hover {
 }
 
 a#completedOrdersLabel {
+  text-decoration: none;
+  color: black;
   position: relative;
   top: 3.5vw;
   left: 16.1vw;
   font-size: 1.5vw;
 }
 
-table#personnelNavigation {
-
-  font-size: 1.5vw;
-  z-index: 10000;
-  position: relative;
-  top: 13.5vw;
-  left: 13.35vw;
-  line-height: 2vw;
-  border-spacing: 0px;
-  border-color: grey;
-  border-style: none;
-  width: 15vw;
-
-  tr {
-    text-align: center;
-    width: 10vw;
-    height: 3vw;
-  }
-
-  tr#leftPersonnel {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 0.5;
-    }
-  }
-
-  tr#leftPersonnel:hover {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 1;
-    }
-  }
-
-  tr#leftPersonalInfo {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 1;
-    }
-  }
-
-  tr#leftCurrentOrders {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 0.5;
-    }
-  }
-
-  tr#leftCurrentOrders:hover {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 1;
-    }
-  }
-
-  tr#leftOrdersHistory {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 0.5;
-    }
-  }
-
-  tr#leftOrdersHistory:hover {
-    a {
-      color: black;
-      text-decoration: none;
-      opacity: 1;
-    }
-  }
-}
-
 span#topNavigation {
-  position: relative;
-  top: 10vw;
-  left:43.5vw;
+  position: absolute;
+  top: 49.0vw;
+  left: 43.5vw;
 
   a{
     font-size: 1.4vw;
@@ -297,24 +226,20 @@ span#topNavigation {
     opacity: 0.5;
   }
 
+  a#toPersonnel {
+    opacity: 0.5;
+  }
+
+  a#toCurrentOrders {
+    opacity: 0.5;
+  }
+
   a#dash {
     opacity: 0.5;
   }
 
   a#dash2 {
     opacity: 0.5;
-  }
-
-  a#toPersonnel {
-    opacity: 0.5;
-  }
-
-  a#toInfoItems {
-    opacity: 0.5;
-  }
-
-  a#toInfoItems:hover {
-    opacity: 1;
   }
 
   a#toMainPage:hover {
@@ -324,6 +249,11 @@ span#topNavigation {
   a#toPersonnel:hover {
     opacity: 1;
   }
+
+  a#toCurrentOrders:hover {
+    opacity: 1;
+  }
+
 }
 
 button {
@@ -658,8 +588,7 @@ div#bestOffers {
 
 footer {
   font-size: 1.2vw;
-  position: absolute;
-  top: 95vw;
+  position: static;
   left: 0vw;
   height: 49vw;
   width: 100vw;
@@ -1001,19 +930,98 @@ footer {
   display: block;
 }
 
-div#centralBlock {
-  position: absolute;
+div#centralCartBlock {
+  margin-top: 48.5vw;
+  position: static;
   top: 35vw;
 }
 
-table#tablePersonalInfo {
+img#disobedientCart {
+  position: absolute;
+  top: 6vw;
+  left: 83.4vw;
+  opacity: 0.5;
+  bottom: 0.0vw;
+  width: 1.45vw;
+  height: 1.5vw;
+}
+
+img#disobedientCart:hover {
+  opacity: 1;
+}
+
+img#disobedientPersonnel {
+  position: absolute;
+  top: 6vw;
+  left: 79.7vw;
+  opacity: 0.5;
+  bottom: 0.0vw;
+  width: 1.45vw;
+  height: 1.5vw;
+}
+
+img#disobedientPersonnel:hover {
+  opacity: 1;
+}
+
+a#sadEmpty {
+  position: relative;
+  left: 35vw;
+  font-size: 2vw;
+  margin-bottom: 3vw;
+}
+
+table#hatTable {
+  font-size: 1.5vw;
+  position: relative;
+  left: 13.5vw;
+  color: grey;
+}
+
+div#completeTotal {
+  font-size: 2vw;
+  position: relative;
+  left: 74vw;
+  margin-bottom: 2vw;
+}
+
+div#confirmOrder {
+  button {
+    font-size: 1.5vw;
+    height: 4vw;
+  }
+  button:hover {
+    color: darkgoldenrod;
+  }
+  position: relative;
+  left: 69.5vw;
+  margin-bottom: 2vw;
+}
+
+div#confirmOrderInactive {
+  button {
+    font-size: 1.5vw;
+    height: 4vw;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: whitesmoke;
+    box-shadow: none;
+    color: dimgrey;
+  }
+
+  position: relative;
+  left: 69.5vw;
+  margin-bottom: 2vw;
+}
+
+
+table {
 
   margin-right: 0;
   font-size: 1.5vw;
   position: relative;
   width: 70vw;
-  left: 32vw;
-  top: -1.5vw;
+  left: 13vw;
   margin-bottom: 2vw;
 
   a {
@@ -1088,67 +1096,4 @@ textarea {
 
 textarea:focus {
   outline: none;
-}
-
-div#confirmChanges {
-  button {
-    font-size: 1.5vw;
-    height: 4vw;
-  }
-  button:hover {
-    color: darkgoldenrod;
-  }
-  position: relative;
-  left: 64vw;
-  margin-bottom: 2vw;
-  top: -3vw;
-}
-
-div#confirmChangesInactive {
-
-  position: relative;
-  left: 64vw;
-  margin-bottom: 2vw;
-  top: -3vw;
-
-  button {
-    font-size: 1.5vw;
-    height: 4vw;
-    cursor: not-allowed;
-    pointer-events: none;
-    background-color: whitesmoke;
-    box-shadow: none;
-    color: dimgrey;
-  }
-
-  a {
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-}
-
-img#disobedientCart {
-  position: relative;
-  left: 5.9vw;
-  opacity: 0.5;
-  bottom: 0.0vw;
-  width: 1.45vw;
-  height: 1.5vw;
-}
-
-img#disobedientCart:hover {
-  opacity: 1;
-}
-
-img#disobedientPersonnel {
-  position: relative;
-  left: 3.7vw;
-  opacity: 0.5;
-  bottom: 0.0vw;
-  width: 1.5vw;
-  height: 1.5vw;
-}
-
-img#disobedientPersonnel:hover {
-  opacity: 1;
 }
