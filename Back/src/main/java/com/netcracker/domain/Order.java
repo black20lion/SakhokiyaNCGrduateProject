@@ -1,9 +1,6 @@
 package com.netcracker.domain;
 
-import com.netcracker.domain.enumeration.DeliveryStatus;
-import com.netcracker.domain.enumeration.DeliveryType;
-import com.netcracker.domain.enumeration.OrderStatus;
-import com.netcracker.domain.enumeration.PayStatus;
+import com.netcracker.domain.enumeration.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -63,4 +60,11 @@ public class Order {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "pay_type")
+    @Enumerated(EnumType.STRING)
+    private PayType payType;
 }

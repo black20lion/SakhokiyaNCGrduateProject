@@ -28,7 +28,7 @@ public interface CustomerInfoRepository extends JpaRepository<CustomerInfo, Inte
             "\t:customerId, \n" +
             "\t:firstName,\n" +
             "\t:lastName,\n" +
-            "\tnull,\n" +
+            "\t 'UNSET' ,\n" +
             "\tnull,\n" +
             "\tnull,\n" +
             "\tnull\n" +

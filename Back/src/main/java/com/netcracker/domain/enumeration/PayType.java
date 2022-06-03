@@ -1,5 +1,5 @@
 package com.netcracker.domain.enumeration;
 
-public enum Gender {
-    MALE, FEMALE, UNSET;
+public enum PayType {
+    CASH, CARD, ONSITE
 }

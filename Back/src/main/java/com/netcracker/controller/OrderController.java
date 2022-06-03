@@ -4,6 +4,7 @@ import com.netcracker.domain.Order;
 import com.netcracker.domain.enumeration.DeliveryStatus;
 import com.netcracker.domain.enumeration.DeliveryType;
 import com.netcracker.domain.enumeration.OrderStatus;
+import com.netcracker.domain.enumeration.PayType;
 import com.netcracker.exception.ResourceNotFoundException;
 import com.netcracker.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class OrderController {
         return ResponseEntity.ok().body(orders);
     }
 
+    @RolesAllowed("user")
     @PostMapping("/orders/current")
     public ResponseEntity<List<Long>> createOrder(@RequestParam(value = "customer_id") Long customerId,
                                                    @RequestParam(value = "commentary") String commentary,
@@ -45,9 +47,11 @@ public class OrderController {
                                                    @RequestParam(value = "delivery_type") DeliveryType deliveryType,
                                                    @RequestParam(value = "delivery_status") DeliveryStatus deliveryStatus,
                                                    @RequestParam(value = "phone_number") String phoneNumber,
-                                                   @RequestParam(value = "email") String email)
+                                                   @RequestParam(value = "email") String email,
+                                                  @RequestParam(value = "name") String name,
+                                                  @RequestParam(value = "pay_type") PayType payType)
             throws ResourceNotFoundException {
-        List<Long> orderId = orderService.createOrder(customerId, commentary, deliveryAddress, deliveryType.toString(), deliveryStatus.toString(), phoneNumber, email);
+        List<Long> orderId = orderService.createOrder(customerId, commentary, deliveryAddress, deliveryType.toString(), deliveryStatus.toString(), phoneNumber, email, name, payType.toString());
         return ResponseEntity.ok().body(orderId);
     }
 

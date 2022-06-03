@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -40,12 +41,21 @@ public class OrderService {
 
     @Transactional
     public List<Long> createOrder(Long customerId, String commentary, String deliveryAddress, String deliveryType,
-                                        String deliveryStatus, String phoneNumber, String email) {
-        repository.createOrder(customerId, commentary, deliveryAddress, deliveryType, deliveryStatus, phoneNumber, email);
-        List<Long> orderId = repository.getOrderId();
-        repository.fillOrder(orderId.get(0), basketRepository.getCountOfBasketItems(customerId).get(0));
-        basketRepository.deleteAllByCustomerId(customerId);
-        return orderId;
+                                        String deliveryStatus, String phoneNumber, String email, String name, String payType) {
+        repository.startTransaction();
+        if (basketRepository.getCountOfBasketItems(customerId).get(0).intValue() > 0) {
+            repository.createOrder(customerId, commentary, deliveryAddress, deliveryType, deliveryStatus, phoneNumber, email, name, payType);
+            List<Long> orderId = repository.getOrderId();
+            repository.fillOrder(orderId.get(0), basketRepository.getCountOfBasketItems(customerId).get(0));
+            basketRepository.deleteAllByCustomerId(customerId);
+            repository.endTransaction();
+            return orderId;
+        } else {
+            repository.endTransaction();
+            ArrayList<Long> myArray = new ArrayList<Long>();
+            myArray.add(0L);
+            return myArray;
+        }
     }
 
     public void payOrder(Long id) {

@@ -29,8 +29,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "BEGIN;\n" +
-            "insert into order_entity (customer_id, date_time, commentary, delivery_address, total_price, delivery_type, delivery_status, pay_status, order_status, phone_number, email)\n" +
+    @Query(value = "" +
+            "insert into order_entity (customer_id, date_time, commentary, delivery_address, total_price, delivery_type, delivery_status, pay_status, order_status, phone_number, email, name, pay_type)\n" +
             "values (\n" +
             "\t:customerId,\n" +
             "\tcurrent_date,\n" +
@@ -47,16 +47,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "\t'UNPAID',\n" +
             "\t'NEW',\n" +
             "\t:phoneNumber,\n" +
-            "\t:email\n" +
+            "\t:email,\n" +
+            "\t:name,\n" +
+            "\t:payType\n" +
             "); \n" +
-            "COMMIT;", nativeQuery = true)
+            "", nativeQuery = true)
     void createOrder(@Param("customerId") Long customerId,
                      @Param("commentary") String commentary,
                      @Param("deliveryAddress") String deliveryAddress,
                      @Param("deliveryType") String deliveryType,
                      @Param("deliveryStatus") String deliveryStatus,
                      @Param("phoneNumber") String phoneNumber,
-                     @Param("email") String email);
+                     @Param("email") String email,
+                     @Param("name") String name,
+                     @Param("payType") String payType);
 
 
     @Query(value = "select * from lastval()", nativeQuery = true)
@@ -79,5 +83,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "where id = :orderId\n;" +
             "commit;", nativeQuery = true)
     void payOrder(@Param("orderId") Long orderId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "BEGIN ; ", nativeQuery = true)
+    void startTransaction();
+
+    @Modifying
+    @Transactional
+    @Query(value = "COMMIT ; ", nativeQuery = true)
+    void endTransaction();
 
 }

@@ -6,6 +6,7 @@ import com.netcracker.domain.enumeration.Gender;
 import com.netcracker.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getUserInfoByEmail(email));
     }
 
-
+    @RolesAllowed("user")
     @PostMapping("/updateUserInfo")
     public ResponseEntity<String> updateUserInfo(@RequestParam(value = "customerId") Long customerId,
                                                  @RequestParam(value = "firstName") String firstName,
