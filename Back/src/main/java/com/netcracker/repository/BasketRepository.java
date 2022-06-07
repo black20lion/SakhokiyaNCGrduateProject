@@ -44,6 +44,16 @@ public interface BasketRepository extends JpaRepository<BasketItem, Integer> {
             "COMMIT; ", nativeQuery = true)
     void addItemIntoBasket(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
 
+    @Modifying
+    @Transactional
+    @Query(value =
+            "insert into basket_item (customer_id, offer_id, quantity) " +
+            "values (" +
+            ":customerId, :offerId, 1) " +
+            "on conflict (offer_id) do update " +
+            "set quantity = basket_item.quantity+1 ; ", nativeQuery = true)
+    void addItemIntoBasketMerginal(@Param("customerId") Long customerId, @Param("offerId") Long offerId);
+
 
     @Modifying
     @Transactional

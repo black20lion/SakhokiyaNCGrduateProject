@@ -45,4 +45,14 @@ public class BasketService {
             }
         }
     }
+
+    public void mergeBasket(Long customer_id, Long[] offer_id, Long[] quantity) {
+        repository.startTransaction();
+        for (int i = 0; i < offer_id.length; i++) {
+            for (int j = 0; j < quantity[i]; j++) {
+                repository.addItemIntoBasketMerginal(customer_id, offer_id[i]);
+            }
+        }
+        repository.endTransaction();
+    }
 }

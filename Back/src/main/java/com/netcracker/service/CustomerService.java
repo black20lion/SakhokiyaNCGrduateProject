@@ -98,6 +98,7 @@ public class CustomerService {
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             int postDataLength = postData.length;
             String accessToken = getAccessToken();
+
             String request = "http://localhost:8080/admin/realms/shop/users/" + id + "/reset-password";
             URL url = new URL(request);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();

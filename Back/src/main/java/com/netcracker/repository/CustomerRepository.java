@@ -19,6 +19,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     List<Customer> findAllByEmail(String email);
 
+    @Query(value = "SELECT id from customer " +
+            "where email = :email ", nativeQuery = true)
+    List<Long> getCustomerIdByEmail(String email);
+
     <S extends Customer> S save(S entity);
 
     @Modifying
